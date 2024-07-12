@@ -7,11 +7,11 @@ type Petition struct {
 	Title           string  `json:"title"`
 	Description     *string `json:"description"`
 	PdfURL          *string `json:"pdf_url"`
-	Votes           int     `json:"votes"`
-	IndividualVotes []Vote  `json:"individual_votes" gorm:"foreignKey:PetitionID"`
+	Signs           int     `json:"signs"`
+	IndividualVotes []Sign  `json:"individual_votes" gorm:"foreignKey:PetitionID"`
 }
 
-type Vote struct {
+type Sign struct {
 	gorm.Model
 	PetitionID    uint   `json:"petition_id"`
 	NullifierHash string `json:"signature"`
