@@ -29,14 +29,13 @@ func SignPetition(c *fiber.Ctx) error {
 		MerkleRoot:        signRequest.MerkleRoot,
 		VerificationLevel: signRequest.VerificationLevel,
 		Action:            signRequest.Action,
-		SignalHash:        signRequest.SignalHash,
 	})
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
 	if err := db.AddSign(signRequest.PetitionID, successResponse.NullifierHash); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to sign")
+		return c.Status(fiber.StatusInternalServerError).SendString("Failed to add sign to db")
 	}
 
 	return c.SendString("Signed successfully")

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -14,7 +15,6 @@ type VerifyRequest struct {
 	MerkleRoot        string `json:"merkle_root"`
 	VerificationLevel string `json:"verification_level"`
 	Action            string `json:"action"`
-	SignalHash        string `json:"signal_hash"`
 }
 
 type VerifyResponseSuccess struct {
@@ -36,7 +36,7 @@ func VerifyWorldIDProof(verifyRequest *VerifyRequest) (*VerifyResponseSuccess, e
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", "https://developer.worldcoin.org", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://developer.worldcoin.org/api/v2/verify/app_staging_f324149022608832a0b719539d2a4311", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +58,7 @@ func VerifyWorldIDProof(verifyRequest *VerifyRequest) (*VerifyResponseSuccess, e
 	if resp.StatusCode == http.StatusOK {
 		var successResponse VerifyResponseSuccess
 		err = json.Unmarshal(body, &successResponse)
+		log.Println(string(body))
 		if err != nil {
 			return nil, err
 		}
