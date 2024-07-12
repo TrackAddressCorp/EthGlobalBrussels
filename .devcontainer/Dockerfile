@@ -37,7 +37,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && rustup target add wasm32-unknown-unknown
 
 # Copy the source code, go.mod, and go.sum files into the container
-COPY ../go.mod ../go.sum ./
+COPY ../backend/go.mod ../backend/go.sum ./
 
 # Download the Go modules
 RUN go mod download \
