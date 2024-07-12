@@ -30,7 +30,7 @@ type VerifyResponseError struct {
 	Attribute interface{} `json:"attribute"`
 }
 
-func VerifyWorldIDProof(verifyRequest VerifyRequest) (*VerifyResponseSuccess, error) {
+func VerifyWorldIDProof(verifyRequest *VerifyRequest) (*VerifyResponseSuccess, error) {
 	jsonData, err := json.Marshal(verifyRequest)
 	if err != nil {
 		return nil, err

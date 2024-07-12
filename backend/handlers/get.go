@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetPartition(c *fiber.Ctx) error {
+func GetPetition(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	intID, err := strconv.Atoi(id)

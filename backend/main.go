@@ -24,7 +24,8 @@ func initDB() {
 func initFiber() {
 	app := fiber.New()
 
-	app.Get("/petition/:id", handlers.GetPartition)
+	app.Get("/petition/:id", handlers.GetPetition)
+	app.Post("/petition/sign", handlers.SignPetition)
 
 	app.Listen(":3000")
 }

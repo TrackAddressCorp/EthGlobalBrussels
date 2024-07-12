@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func AddVote(id uint, NullifierHash string) error {
+func AddSign(id uint, NullifierHash string) error {
 	err := DB.First(&models.Petition{}, id).UpdateColumn("votes", gorm.Expr("votes + ?", 1)).Error
 	if err != nil {
 		return err
