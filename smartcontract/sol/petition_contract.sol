@@ -12,8 +12,10 @@ contract Petition {
 
     string private petition_title;
     string private petition_text;
-    Signer[] private signers;
+    int private constant max_signers = 10000000;
     uint256 private signers_count;
+    Signer[max_signers] private signers;
+    mapping(string => bool) private hasSigned;
 
     constructor(string memory _petition_title, string memory _petition_text) {
         petition_title = _petition_title;
@@ -22,23 +24,15 @@ contract Petition {
     }
 
     function sign(string memory _world_id) public {
-        for (uint i = 0; i < signers.length; i++) {
-            if (keccak256(abi.encodePacked(signers[i].world_id)) == keccak256(abi.encodePacked(_world_id))) {
-                revert("You have already signed this petition.");
-            }
-        }
-        signers.push(
-            Signer(
-                _world_id,
-                block.timestamp,
-                "N/A",
-                0,
-                "N/A"));
+        // require(!hasSigned[_world_id], "You have already signed this petition.");
+        signers[signers_count] = Signer(
+            _world_id,
+            block.timestamp,
+            "N/A",
+            0,
+            "N/A");
         signers_count++;
-    }
-
-    function get_signers() public view returns (Signer[] memory) {
-        return signers;
+        hasSigned[_world_id] = true;
     }
 
     function get_signers_count() public view returns (uint256) {
