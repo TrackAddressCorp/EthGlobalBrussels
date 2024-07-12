@@ -12,8 +12,8 @@ contract Petition {
 
     string private petition_title;
     string private petition_text;
-    int private constant max_signers = 10000000;
-    uint256 private signers_count;
+    uint104 private constant max_signers = 10000000;
+    uint104 private signers_count;
     Signer[max_signers] private signers;
     mapping(string => bool) private hasSigned;
 
@@ -25,6 +25,9 @@ contract Petition {
 
     function sign(string memory _world_id) public {
         // require(!hasSigned[_world_id], "You have already signed this petition.");
+        if (signers_count >= max_signers) {
+            revert("The petition has reached the maximum number of signers.");
+        }
         signers[signers_count] = Signer(
             _world_id,
             block.timestamp,
