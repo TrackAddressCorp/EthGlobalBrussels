@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -58,7 +57,7 @@ func VerifyWorldIDProof(verifyRequest *VerifyRequest) (*VerifyResponseSuccess, e
 	if resp.StatusCode == http.StatusOK {
 		var successResponse VerifyResponseSuccess
 		err = json.Unmarshal(body, &successResponse)
-		log.Println(string(body))
+		// log.Println(string(body))
 		if err != nil {
 			return nil, err
 		}

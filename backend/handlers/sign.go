@@ -35,7 +35,7 @@ func SignPetition(c *fiber.Ctx) error {
 	}
 
 	if err := db.AddSign(signRequest.PetitionID, successResponse.NullifierHash); err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to add sign to db")
+		return c.Status(fiber.StatusForbidden).SendString(err.Error())
 	}
 
 	return c.SendString("Signed successfully")
