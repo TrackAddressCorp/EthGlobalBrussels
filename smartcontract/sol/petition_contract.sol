@@ -32,7 +32,7 @@ contract Petition {
         signers_count++;
     }
 
-    function get_signers() public view returns (address[] memory) {
+    function get_signers() public view returns (Signer[] memory) {
         return signers;
     }
 
