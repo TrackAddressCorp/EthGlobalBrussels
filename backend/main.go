@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
+	"github.com/TrackAddressCorp/EthGlobalBrussels/handlers"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,9 +21,9 @@ func initDB() {
 func initFiber() {
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	app.Get("/petition/:id", handlers.GetPetition)
+	app.Post("/petition/sign", handlers.SignPetition)
+	app.Post("/petition/create", handlers.CreatePetition)
 
 	app.Listen(":3000")
 }

@@ -14,6 +14,6 @@ func Init() error {
 	if err != nil {
 		return err
 	}
-	err = DB.AutoMigrate(&models.Petition{})
+	err = DB.AutoMigrate(&models.Petition{}, &models.Sign{})
 	return err
 }
