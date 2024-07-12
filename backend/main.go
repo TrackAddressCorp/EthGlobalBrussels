@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
+	"github.com/TrackAddressCorp/EthGlobalBrussels/models"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,6 +16,7 @@ func initDB() {
 	if err != nil {
 		panic(err)
 	}
+	db.AddPetition(models.Petition{Title: "Test", Description: "Test"})
 }
 
 func initFiber() {
