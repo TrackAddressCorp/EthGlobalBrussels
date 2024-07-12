@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
 	"github.com/TrackAddressCorp/EthGlobalBrussels/handlers"
-	"github.com/TrackAddressCorp/EthGlobalBrussels/models"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -17,8 +16,6 @@ func initDB() {
 	if err != nil {
 		panic(err)
 	}
-	description := "Test"
-	db.AddPetition(models.Petition{Title: "asd", Description: &description})
 }
 
 func initFiber() {
@@ -26,6 +23,7 @@ func initFiber() {
 
 	app.Get("/petition/:id", handlers.GetPetition)
 	app.Post("/petition/sign", handlers.SignPetition)
+	app.Post("/petition/create", handlers.CreatePetition)
 
 	app.Listen(":3000")
 }
