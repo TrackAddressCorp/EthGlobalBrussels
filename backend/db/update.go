@@ -6,7 +6,7 @@ import (
 )
 
 func AddSign(id uint, NullifierHash string) error {
-	err := DB.First(&models.Petition{}, id).UpdateColumn("votes", gorm.Expr("votes + ?", 1)).Error
+	err := DB.First(&models.Petition{}, id).UpdateColumn("signs", gorm.Expr("votes + ?", 1)).Error
 	if err != nil {
 		return err
 	}
