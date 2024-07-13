@@ -29,6 +29,9 @@ func (h *Handler) GetAuth(ctx context.Context, params *GetAuthParams) (*bind.Tra
         params.PrivateKey,
         params.ChainID,
     )
+    if err != nil {
+        return &bind.TransactOpts{}, err
+    }
 
     // ---- eipp-1559 standard ----
     auth.From = params.PublicAddress
