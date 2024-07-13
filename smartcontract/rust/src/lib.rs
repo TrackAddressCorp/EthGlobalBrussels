@@ -8,7 +8,7 @@ extern crate stylus_sdk;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
-use alloc::{
+use std::{
     string::String,
     vec::Vec,
 };
@@ -30,18 +30,19 @@ use stylus_sdk::{
 /// below.
 #[entrypoint]
 pub struct Petition {
-    petition_text:    StorageString,                     // Name of the petition
-    petition_title:   StorageString,                     // Title of the petition
-    signers_count:    StorageUint<32, 1>,                // How many signers the petition currently has
-    signers:          StorageVec<StorageU256>,           // List of all Signers worldID
+    petition_text:    StorageString,                                // Name of the petition
+    petition_title:   StorageString,                                // Title of the petition
+    source_links:     StorageVec<StorageString>,                    // Links to the sources pdf
+    signers_count:    StorageUint<32, 1>,                           // How many signers the petition currently has
+    signers:          StorageVec<StorageU256>,                      // List of all Signers worldID
 }
 
 #[external]
 impl Petition {
     // Constructor
-    pub fn init(&mut self, name: String, title: String) -> Result<(), Vec<u8>> {
+    pub fn init(&mut self, name: String, title: String, links: Vec<String>) -> Result<(), Vec<u8>> {
         // If already initialized => Do nothing and return
-        if !self.petition_text.is_empty() {
+        if !self.petition_title.is_empty() {
             return Ok(());
         }
 
@@ -54,9 +55,16 @@ impl Petition {
             self.petition_text.set_str(name);
             self.petition_title.set_str(title);
 
+            // Initialization of links
+            self.source_links = StorageVec::new(U256::from(0), 0);
+            for link in &links {
+                let mut slot = self.source_links.grow();
+                slot.set_str(link);
+            }
+
             // Default initialization of signers information
-            self.signers_count = StorageUint::new(U256::from(2), 0);
-            self.signers = StorageVec::new(U256::from(3), 0);
+            self.signers_count = StorageUint::new(U256::from(0), 0);
+            self.signers = StorageVec::new(U256::from(0), 0);
         }
 
         Ok(())
@@ -71,9 +79,21 @@ impl Petition {
         Ok(self.petition_title.get_string())
     } 
 
+    pub fn get_source_links(&self) -> Result<Vec<String>, Vec<u8>> {
+        let source_count = self.source_links.len();
+        let mut links = Vec::new();
+        for i in 0..source_count {
+            let tmp = self.source_links.get(i).unwrap();
+            links.push(tmp.get_string());
+        }
+
+        Ok(links)
+    }
+
     pub fn get_signers_count(&self) -> Result<u32, Vec<u8>> {        
         Ok(self.signers_count.to::<u32>())
     }
+
 
     // Sign the petition, saving the signer's information
     pub fn sign(&mut self, world_id: U256) -> Result<(), Vec<u8>> {
