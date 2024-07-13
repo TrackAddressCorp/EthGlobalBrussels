@@ -2,39 +2,28 @@ package blockchain
 
 import (
 	"context"
-	"crypto/ecdsa"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 )
 
-type GetAuthParams struct {
-    PrivateKey    *ecdsa.PrivateKey `json:"private_key"`
-    PublicAddress common.Address    `json:"public_address"`
-    ChainID       *big.Int          `json:"chain_id"`
-}
-
-func (h *Handler) GetAuth(ctx context.Context, params *GetAuthParams) (*bind.TransactOpts, error) {
-    nonce, err := h.Client.PendingNonceAt(ctx, params.PublicAddress)
+func (h *Handler) GetAuth(ctx context.Context) (*bind.TransactOpts, error) {
+    nonce, err := h.Client.PendingNonceAt(ctx, h.PublicAddress)
     if err != nil {
         return &bind.TransactOpts{}, err
     }
 
-    // auth, err := bind.NewKeyedTransactorWithChainID(params.PrivateKey, params.ChainID)
-    // if err != nil {
-    // 	return &bind.TransactOpts{}, err
-    // }
     auth, err := bind.NewKeyedTransactorWithChainID(
-        params.PrivateKey,
-        params.ChainID,
+        h.PrivateKey,
+        h.ChainID,
     )
     if err != nil {
         return &bind.TransactOpts{}, err
     }
 
     // ---- eipp-1559 standard ----
-    auth.From = params.PublicAddress
+    auth.From = h.PublicAddress
     auth.Nonce = big.NewInt(int64(nonce))
     auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
     auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
@@ -58,8 +47,6 @@ func (h *Handler) GetAuth(ctx context.Context, params *GetAuthParams) (*bind.Tra
 }
 
 type DeployParams struct {
-    PrivateKey      *ecdsa.PrivateKey   `json:"private_key"`
-    PublicAddress   common.Address       `json:"public_address"`
     PetitionTitle   string              `json:"petition_title"`
     PetitionText    string              `json:"petition_text"`
 }
@@ -77,8 +64,8 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
     }
     auth, err := h.GetAuth(
         ctx, &GetAuthParams{
-            PrivateKey: params.PrivateKey,
-            PublicAddress: params.PublicAddress,
+            PrivateKey: h.PrivateKey,
+            PublicAddress: h.PublicAddress,
             ChainID: chainID,
         },
     )
@@ -104,26 +91,12 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
 }
 
 type SignParams struct {
-    PrivateKey      *ecdsa.PrivateKey
-    PublicAddress   common.Address
     PetitionAddress common.Address `json:"petition_address"`
     WorldID         string         `json:"world_id"`
 }
 
 func (h *Handler) SignPetition(ctx context.Context, params SignParams) error {
-    chainID, err := h.Client.ChainID(ctx)
-    if err != nil {
-        return err
-    }
-
-    auth, err := h.GetAuth(
-        ctx, 
-        &GetAuthParams{
-            PrivateKey: params.PrivateKey,
-            PublicAddress: params.PublicAddress,
-            ChainID: chainID,
-        },
-    )
+    auth, err := h.GetAuth(ctx)
     if err != nil {
         return err
     }
@@ -139,3 +112,26 @@ func (h *Handler) SignPetition(ctx context.Context, params SignParams) error {
     _, err = contract.Sign(auth, params.WorldID)
     return err
 }
+
+func (h *Handler) GetSignerCount(ctx context.Context, petitionAddress common.Address) (uint64, error) {
+    contract, err := NewPetitionContractCaller(
+        petitionAddress,
+        h.Client,
+    )
+    if err != nil {
+        return 0, err
+    }
+
+    count, err := contract.GetSignersCount(
+        &bind.CallOpts{
+            Context: ctx,
+        },
+    )
+    if err != nil {
+        return 0, err
+    }
+
+    return count.Uint64(), nil
+}
+
+
