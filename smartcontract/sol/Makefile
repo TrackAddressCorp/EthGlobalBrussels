@@ -6,7 +6,7 @@ CONTRACT_NAME = Petition
 DEP_CONTRACT = $(CONTRACT_NAME)Deploy
 CONTRACT_SOL = $(BLOCKCHAIN_DIR)/$(CONTRACT_FILE).sol
 PKG = blockchain
-TYPE = petit_contract
+TYPE = petition_contract
 
 # run outside of devcontainer
 solc:
