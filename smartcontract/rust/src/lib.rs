@@ -9,7 +9,7 @@ extern crate stylus_sdk;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 use std::{
-    string::String,
+    string::{String},
     vec::Vec,
 };
 
@@ -17,7 +17,7 @@ use std::{
 use stylus_sdk::{
     prelude::*,
     alloy_primitives::{U256, Uint},
-    storage::{StorageString, StorageU256, StorageUint, StorageVec}, 
+    storage::{StorageU8, StorageU256, StorageUint, StorageVec, StorageString}, 
 };
 
 /// The solidity_storage macro allows this struct to be used in persistent
@@ -30,7 +30,7 @@ use stylus_sdk::{
 /// below.
 #[entrypoint]
 pub struct Petition {
-    petition_text:    StorageString,                                // Name of the petition
+    petition_text:    StorageString,                                // Text of the petition
     petition_title:   StorageString,                                // Title of the petition
     source_links:     StorageVec<StorageString>,                    // Links to the sources pdf
     signers_count:    StorageUint<32, 1>,                           // How many signers the petition currently has
@@ -40,31 +40,32 @@ pub struct Petition {
 #[external]
 impl Petition {
     // Constructor
-    pub fn init(&mut self, name: String, title: String, links: Vec<String>) -> Result<(), Vec<u8>> {
+    pub fn init(&mut self, text: String, title: String, links: Vec<String>) -> Result<(), Vec<u8>> {
         // If already initialized => Do nothing and return
         if !self.petition_title.is_empty() {
             return Ok(());
         }
 
         unsafe {
-            // Initializes the petition name & title
-            self.petition_text = StorageString::new(U256::from(0), 0);
-            self.petition_title = StorageString::new(U256::from(0), 0);
 
-            // Assign the provided name and title
-            self.petition_text.set_str(name);
-            self.petition_title.set_str(title);
+            // // Initializes the petition text & title
+            self.petition_text = StorageString::new(U256::from(0), 0);
+            self.petition_title = StorageString::new(U256::from(1), 0);
+
+            // // Assign the provided text and title
+            self.petition_text.set_str(text.as_str());
+            self.petition_title.set_str(&title);
 
             // Initialization of links
-            self.source_links = StorageVec::new(U256::from(0), 0);
+            self.source_links = StorageVec::new(U256::from(2), 0);
             for link in &links {
                 let mut slot = self.source_links.grow();
-                slot.set_str(link);
+                slot.set_str(&link);
             }
 
             // Default initialization of signers information
-            self.signers_count = StorageUint::new(U256::from(0), 0);
-            self.signers = StorageVec::new(U256::from(0), 0);
+            self.signers_count = StorageUint::new(U256::from(3), 0);
+            self.signers = StorageVec::new(U256::from(4), 0);
         }
 
         Ok(())
@@ -83,8 +84,9 @@ impl Petition {
         let source_count = self.source_links.len();
         let mut links = Vec::new();
         for i in 0..source_count {
-            let tmp = self.source_links.get(i).unwrap();
-            links.push(tmp.get_string());
+            if let Some(link) = self.source_links.get(i) {
+                links.push(link.get_string());
+            }
         }
 
         Ok(links)
