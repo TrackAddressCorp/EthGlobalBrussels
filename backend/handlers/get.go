@@ -8,6 +8,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type petitionResponse struct {
+	models.Response
+	Petition models.Petition `json:"petition"`
+}
+
 func GetPetition(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -21,5 +26,8 @@ func GetPetition(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(models.Response{StatusMsg: "Petition not found", StatusCode: fiber.StatusNotFound})
 	}
 
-	return c.JSON(partition)
+	return c.JSON(petitionResponse{
+		Response: models.Response{StatusMsg: "Petition fetched successfully", StatusCode: fiber.StatusOK},
+		Petition: partition,
+	})
 }

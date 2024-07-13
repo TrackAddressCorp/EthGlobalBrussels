@@ -9,19 +9,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type CreatePetitionRequest struct {
+type createPetitionRequest struct {
 	Title       string  `json:"title"`
 	Description *string `json:"description"`
 	PdfURL      *string `json:"pdf_url"`
 }
 
-type CreatePetitionResponse struct {
+type createPetitionResponse struct {
 	models.Response
 	ID uint `json:"id"`
 }
 
 func CreatePetition(c *fiber.Ctx) error {
-	var petitionRequest CreatePetitionRequest
+	var petitionRequest createPetitionRequest
 	if err := c.BodyParser(&petitionRequest); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: "Invalid request", StatusCode: fiber.StatusBadRequest})
 	}
@@ -45,5 +45,5 @@ func CreatePetition(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.Response{StatusMsg: errorActionResp.Detail, StatusCode: fiber.StatusInternalServerError})
 	}
 
-	return c.JSON(CreatePetitionResponse{Response: models.Response{StatusMsg: "Petition created successfully", StatusCode: fiber.StatusOK}, ID: newPetition.ID})
+	return c.JSON(createPetitionResponse{Response: models.Response{StatusMsg: "Petition created successfully", StatusCode: fiber.StatusOK}, ID: newPetition.ID})
 }

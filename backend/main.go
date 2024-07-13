@@ -1,11 +1,8 @@
 package main
 
 import (
-	"log"
-
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
 	"github.com/TrackAddressCorp/EthGlobalBrussels/handlers"
-	"github.com/TrackAddressCorp/EthGlobalBrussels/worldid"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
@@ -13,13 +10,6 @@ import (
 
 func main() {
 	godotenv.Load()
-
-	actionresponse, errorresponse, err := worldid.CreateDynamicAction(worldid.CreateActionRequest{
-		Action: "petition", MaxVerifications: 1,
-	})
-	log.Println(actionresponse)
-	log.Println(errorresponse)
-	log.Println(err)
 
 	initDB()
 	initFiber()

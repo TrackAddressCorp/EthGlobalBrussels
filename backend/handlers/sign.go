@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
+	"github.com/TrackAddressCorp/EthGlobalBrussels/models"
 	"github.com/TrackAddressCorp/EthGlobalBrussels/worldid"
 	"github.com/gofiber/fiber/v2"
 )
 
-type SignRequest struct {
+type signRequest struct {
 	NullifierHash     string `json:"nullifier_hash"`
 	Proof             string `json:"proof"`
 	MerkleRoot        string `json:"merkle_root"`
@@ -16,15 +17,10 @@ type SignRequest struct {
 	PetitionID uint `json:"petition_id"`
 }
 
-type SignResponse struct {
-	Status     string `json:"status"`
-	StatusCode int    `json:"status_code"`
-}
-
 func SignPetition(c *fiber.Ctx) error {
-	var signRequest SignRequest
+	var signRequest signRequest
 	if err := c.BodyParser(&signRequest); err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Invalid request")
+		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: "Invalid request", StatusCode: fiber.StatusBadRequest})
 	}
 
 	successResponse, err := worldid.VerifyWorldIDProof(&worldid.VerifyRequest{
@@ -35,15 +31,12 @@ func SignPetition(c *fiber.Ctx) error {
 		Action:            signRequest.Action,
 	})
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: err.Error(), StatusCode: fiber.StatusBadRequest})
 	}
 
 	if err := db.AddSign(signRequest.PetitionID, successResponse.NullifierHash); err != nil {
 		return c.Status(fiber.StatusForbidden).SendString(err.Error())
 	}
 
-	return c.Status(fiber.StatusOK).JSON(SignResponse{
-		Status:     "signed successfully",
-		StatusCode: fiber.StatusOK,
-	})
+	return c.Status(fiber.StatusOK).JSON(models.Response{StatusMsg: "Petition signed successfully", StatusCode: fiber.StatusOK})
 }
