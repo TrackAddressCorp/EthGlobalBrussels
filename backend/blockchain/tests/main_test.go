@@ -2,10 +2,10 @@ package blockchain_test
 
 import (
 	"context"
+	"log"
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	blockchain "github.com/TrackAddressCorp/EthGlobalBrussels/backend/blockchain"
 )
 
@@ -17,6 +17,8 @@ func TestMain(m *testing.M) {
 		context.Background(),
 		os.Getenv("ARBITRUM_RPC"),
 	)
-	require.NoError(m, err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	os.Exit(m.Run())
 }
