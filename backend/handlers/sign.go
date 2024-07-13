@@ -12,9 +12,13 @@ type SignRequest struct {
 	MerkleRoot        string `json:"merkle_root"`
 	VerificationLevel string `json:"verification_level"`
 	Action            string `json:"action"`
-	SignalHash        string `json:"signal_hash"`
 
 	PetitionID uint `json:"petition_id"`
+}
+
+type SignResponse struct {
+	Status     string `json:"status"`
+	StatusCode int    `json:"status_code"`
 }
 
 func SignPetition(c *fiber.Ctx) error {
@@ -38,5 +42,8 @@ func SignPetition(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusForbidden).SendString(err.Error())
 	}
 
-	return c.SendString("Signed successfully")
+	return c.Status(fiber.StatusOK).JSON(SignResponse{
+		Status:     "signed successfully",
+		StatusCode: fiber.StatusOK,
+	})
 }
