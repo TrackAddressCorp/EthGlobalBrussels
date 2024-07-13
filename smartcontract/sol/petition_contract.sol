@@ -15,7 +15,7 @@ contract Petition {
     uint104 private constant max_signers = 10000000;
     uint104 private signers_count;
     Signer[max_signers] private signers;
-    mapping(string => bool) private hasSigned;
+    // mapping(string => bool) private hasSigned;
 
     constructor(string memory _petition_title, string memory _petition_text) {
         petition_title = _petition_title;
