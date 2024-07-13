@@ -29,6 +29,9 @@ func UploadFile(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: "Invalid petition ID", StatusCode: fiber.StatusBadRequest})
 	}
+	if !db.PetitionExists(uint(petitionID)) {
+		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: "Petition does not exist", StatusCode: fiber.StatusBadRequest})
+	}
 
 	if _, err := os.Stat("./uploads"); os.IsNotExist(err) {
 		os.Mkdir("./uploads", 0755)

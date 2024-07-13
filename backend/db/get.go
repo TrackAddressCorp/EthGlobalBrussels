@@ -10,6 +10,13 @@ func GetPetition(id uint) (models.Petition, error) {
 	return petition, err
 }
 
+func PetitionExists(id uint) bool {
+	var count int64
+
+	DB.Model(&models.Petition{}).Where("id = ?", id).Count(&count)
+	return count > 0
+}
+
 func ListPetitions() ([]models.Petition, error) {
 	var petitions []models.Petition
 
