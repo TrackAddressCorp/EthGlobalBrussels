@@ -8,9 +8,7 @@
         "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
     ],
-    "runArgs": [
-        "--network=host"
-    ],
+    "forwardPorts": [8080],
     "customizations": {
         "settings": {
             "go.gopath": "/go",
