@@ -25,3 +25,7 @@ func AddSign(id uint, NullifierHash string) error {
 	err = DB.Model(&models.Petition{}).Where("id = ?", id).UpdateColumn("signs", gorm.Expr("signs + ?", 1)).Error
 	return err
 }
+
+func SetPdfURL(id uint, pdfURL string) error {
+	return DB.Model(&models.Petition{}).Where("id = ?", id).Update("pdf_url", pdfURL).Error
+}
