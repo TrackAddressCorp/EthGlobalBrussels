@@ -4,9 +4,13 @@ import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
 	"github.com/TrackAddressCorp/EthGlobalBrussels/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
+
 	initDB()
 	initFiber()
 }
@@ -20,6 +24,11 @@ func initDB() {
 
 func initFiber() {
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:3000",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	app.Get("/petition/:id", handlers.GetPetition)
 	app.Get("/petitions", handlers.ListPetitions)

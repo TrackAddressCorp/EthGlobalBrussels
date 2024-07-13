@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"os"
 )
 
 type VerifyRequest struct {
@@ -35,7 +36,7 @@ func VerifyWorldIDProof(verifyRequest *VerifyRequest) (*VerifyResponseSuccess, e
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", "https://developer.worldcoin.org/api/v2/verify/app_staging_f324149022608832a0b719539d2a4311", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://developer.worldcoin.org/api/v2/verify/"+os.Getenv("WORLDID_APP_ID"), bytes.NewBuffer(jsonData))
 	if err != nil {
 		return nil, err
 	}
