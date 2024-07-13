@@ -22,5 +22,4 @@ type Pdf struct {
 	gorm.Model
 	PetitionID uint   `json:"petition_id"`
 	PdfURL     string `json:"pdf_url"`
-	Hash       string `json:"hash"`
 }
