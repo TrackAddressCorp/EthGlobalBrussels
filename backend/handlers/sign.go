@@ -12,7 +12,6 @@ type SignRequest struct {
 	MerkleRoot        string `json:"merkle_root"`
 	VerificationLevel string `json:"verification_level"`
 	Action            string `json:"action"`
-	SignalHash        string `json:"signal_hash"`
 
 	PetitionID uint `json:"petition_id"`
 }
