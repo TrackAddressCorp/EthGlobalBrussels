@@ -102,3 +102,40 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
         Contract: contract,
     }, nil
 }
+
+type SignParams struct {
+    PrivateKey      *ecdsa.PrivateKey
+    PublicAddress   common.Address
+    PetitionAddress common.Address `json:"petition_address"`
+    WorldID         string         `json:"world_id"`
+}
+
+func (h *Handler) SignPetition(ctx context.Context, params SignParams) error {
+    chainID, err := h.Client.ChainID(ctx)
+    if err != nil {
+        return err
+    }
+
+    auth, err := h.GetAuth(
+        ctx, 
+        &GetAuthParams{
+            PrivateKey: params.PrivateKey,
+            PublicAddress: params.PublicAddress,
+            ChainID: chainID,
+        },
+    )
+    if err != nil {
+        return err
+    }
+
+    contract, err := NewPetitionContractTransactor(
+        params.PetitionAddress,
+        h.Client,
+    )
+    if err != nil {
+        return err
+    }
+
+    _, err = contract.Sign(auth, params.WorldID)
+    return err
+}
