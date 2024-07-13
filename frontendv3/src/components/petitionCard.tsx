@@ -10,6 +10,8 @@ const PetitionCard = ({ key, title, description }: {key :number,  title: string,
       p={4}
       boxShadow="md"
       bg="white"
+      key={key}
+      width={{ base: '100%', md: 'auto' }}
     >
       <Heading as="h3" size="lg" mb={4}>
         {title}

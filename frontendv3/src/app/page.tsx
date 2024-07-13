@@ -1,9 +1,22 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
+import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading, IconButton } from '@chakra-ui/react';
 import PetitionList from '~/components/petitionList';
+
+const PlusButton = () => {
+  return (
+    <Box position="fixed" bottom="4" left="4">
+      <IconButton
+        colorScheme="teal"
+        aria-label="Add"
+        icon={<AddIcon />}
+        size="lg"
+      />
+    </Box>
+  );
+};
 
 const App = () => {
   return (
@@ -16,6 +29,7 @@ const App = () => {
         </Box>
       </Center>
       <PetitionList />
+      <PlusButton />
     </ChakraProvider>
   );
 };

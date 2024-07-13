@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ChakraProvider, Box, Spinner, SimpleGrid } from '@chakra-ui/react';
+import { ChakraProvider, Box, Spinner, SimpleGrid, Center } from '@chakra-ui/react';
 import PetitionCard from './petitionCard';
 
 const PetitionList = () => {
@@ -17,12 +17,7 @@ const PetitionList = () => {
                     throw new Error('Network response was not ok');
                 }
                 let data = await response.json();
-                // Ensure data is an array
-                if (!Array.isArray(data)) {
-                    console.error('Fetched data is not an array:', data);
-                    data = []; // Set to empty array if not an array
-                }
-                setPetitions(data);
+                setPetitions(data.petitions);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching petitions:', error);
