@@ -7,6 +7,7 @@ toolchain go1.22.5
 require (
 	github.com/ethereum/go-ethereum v1.14.7
 	github.com/gofiber/fiber/v2 v2.52.5
+	github.com/joho/godotenv v1.5.1
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.11
 )

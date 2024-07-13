@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
 	"github.com/TrackAddressCorp/EthGlobalBrussels/models"
+	"github.com/TrackAddressCorp/EthGlobalBrussels/worldid"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -31,6 +34,12 @@ func CreatePetition(c *fiber.Ctx) error {
 	if err := db.CreatePetition(&newPetition); err != nil {
 		return c.Status(fiber.StatusForbidden).SendString(err.Error())
 	}
+
+	worldid.CreateDynamicAction(worldid.CreateActionRequest{
+		Action:           strconv.Itoa(int(newPetition.ID)),
+		Name:             newPetition.Title,
+		MaxVerifications: 1,
+	})
 
 	return c.JSON(CreatePetitionResponse{ID: newPetition.ID})
 }
