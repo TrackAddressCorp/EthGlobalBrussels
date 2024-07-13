@@ -124,4 +124,44 @@ func (h *Handler) GetSignerCount(ctx context.Context, petitionAddress common.Add
     return count.Uint64(), nil
 }
 
+func (h *Handler) GetTitle(ctx context.Context, petitionAddress common.Address) (string, error) {
+    contract, err := NewPetitionContractCaller(
+        petitionAddress,
+        h.Client,
+    )
+    if err != nil {
+        return "", err
+    }
 
+    title, err := contract.GetPetitionTitle(
+        &bind.CallOpts{
+            Context: ctx,
+        },
+    )
+    if err != nil {
+        return "", err
+    }
+
+    return title, nil
+}
+
+func (h *Handler) GetText(ctx context.Context, petitionAddress common.Address) (string, error) {
+    contract, err := NewPetitionContractCaller(
+        petitionAddress,
+        h.Client,
+    )
+    if err != nil {
+        return "", err
+    }
+
+    text, err := contract.GetPetitionText(
+        &bind.CallOpts{
+            Context: ctx,
+        },
+    )
+    if err != nil {
+        return "", err
+    }
+
+    return text, nil
+}
