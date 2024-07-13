@@ -1,55 +1,23 @@
 
 'use client'
 
-import { Link } from '@chakra-ui/next-js'
+import React, { useEffect, useState } from 'react';
+import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import PetitionList from '~/components/petitionList';
 
-import { Card, CardHeader, CardBody, CardFooter, Heading, Stack, StackDivider, Box , Text, Center} from '@chakra-ui/react'
-export default function Home() {
-
+const App = () => {
   return (
-    <div>
+    <ChakraProvider>
       <Center>
-
-        <Card>
-          <CardHeader>
-            <Heading size='md'>Client Report</Heading>
-          </CardHeader>
-
-          <CardBody>
-            <Stack divider={<StackDivider />} spacing='4'>
-              <Box>
-                <Heading size='xs' textTransform='uppercase'>
-                  Summary
-                </Heading>
-                <Text pt='2' fontSize='sm'>
-                  View a summary of all your clients over the last month.
-                </Text>
-              </Box>
-              <Box>
-                <Heading size='xs' textTransform='uppercase'>
-                  Overview
-                </Heading>
-                <Text pt='2' fontSize='sm'>
-                  Check out the overview of your clients.
-                </Text>
-              </Box>
-              <Box>
-                <Heading size='xs' textTransform='uppercase'>
-                  Analysis
-                </Heading>
-                <Text pt='2' fontSize='sm'>
-                  See a detailed analysis of all your business clients.
-                </Text>
-              </Box>
-            </Stack>
-          </CardBody>
-        </Card>
+        <Box p={5}>
+          <Heading as="h1" size="xl" mb={4}>
+            Welcome to the Petition Platform
+          </Heading>
+        </Box>
       </Center>
-
-      <Link href='/item/1' color='blue.400' _hover={{ color: 'blue.500' }}>
-        About
-      </Link>
-
-    </div>
+      <PetitionList />
+    </ChakraProvider>
   );
-}
+};
+
+export default App;
