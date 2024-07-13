@@ -10,4 +10,4 @@ rustc -Vv
 cargo -V
 
 # Build and test main crate
-cargo build --all-features
+cargo stylus check --rust-stable
