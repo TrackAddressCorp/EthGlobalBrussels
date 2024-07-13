@@ -20,6 +20,6 @@ func PetitionExists(id uint) bool {
 func ListPetitions() ([]models.Petition, error) {
 	var petitions []models.Petition
 
-	err := DB.Find(&petitions).Error
+	err := DB.Where("finished = ?", true).Find(&petitions).Error
 	return petitions, err
 }
