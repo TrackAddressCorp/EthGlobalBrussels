@@ -70,31 +70,30 @@ export default function ItemDetail() {
 
     return (
         <ChakraProvider>
-<div>
-            <Card>
-                <CardHeader>
-                    <HStack justify="space-between">
-                        <Heading size='md'>{item.title}</Heading>
-                        <Text>Signs: {item.signs}</Text>
-                    </HStack>
-                </CardHeader>
-                <CardBody>
-                    <Text pt='2' fontSize='sm'>
-                        {item.description}
-                    </Text>
-                    {item.pdfs.map(pdf => (
-                        <div key={pdf.ID} style={{ marginBottom: '20px' }}>
-                            <iframe
-                                src={pdf.pdf_url}
-                                style={{ width: '100%', height: '500px' }}
-                                frameBorder="0"
-                                allowFullScreen
-                            ></iframe>
-                        </div>
-                    ))}
-                </CardBody>
-            </Card>
-        </div>
+            <div>
+                <Card padding="10px">
+                    <CardHeader>
+                        <HStack justify="space-between">
+                            <Heading size='md'>{item.title}</Heading>
+                            <Text>Signs: {item.signs}</Text>
+                        </HStack>
+                    </CardHeader>
+                    <CardBody>
+                        <Text pt='2' fontSize='sm' marginBottom="20px">
+                            {item.description}
+                        </Text>
+                        {item.pdfs.map(pdf => (
+                            <div key={pdf.ID} style={{ marginBottom: '20px' }}>
+                                <iframe
+                                    src={pdf.pdf_url}
+                                    style={{ width: '100%', height: '500px' }}
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                        ))}
+                    </CardBody>
+                </Card>
+            </div>
         </ChakraProvider>
     );
 };
