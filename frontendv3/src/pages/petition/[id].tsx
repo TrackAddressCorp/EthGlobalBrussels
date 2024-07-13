@@ -1,10 +1,22 @@
 'use client'
 
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Card, CardBody, CardHeader, Center, ChakraProvider, Heading, HStack, IconButton, Text } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, CardHeader, Center, ChakraProvider, Divider, Heading, HStack, IconButton, Spinner, Text, Toast } from '@chakra-ui/react';
+import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit';
 import { useRouter } from 'next/router';
 
 import { useEffect, useState } from 'react';
+
+function onSuccess(data: ISuccessResult) {
+    console.log(data);
+    Toast({
+        title: "Petition signed.",
+        description: "Your signature has been added to the petition.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+    });
+}
 
 interface Petition {
     ID: number;
