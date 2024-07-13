@@ -2,18 +2,16 @@ package blockchain
 
 import (
 	"context"
-	"fmt"
-	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 )
 
 func (h *Handler) getAuth(ctx context.Context) (*bind.TransactOpts, error) {
-    nonce, err := h.Client.PendingNonceAt(ctx, h.PublicAddress)
-    if err != nil {
-        return &bind.TransactOpts{}, err
-    }
+    // nonce, err := h.Client.PendingNonceAt(ctx, h.PublicAddress)
+    // if err != nil {
+    //     return &bind.TransactOpts{}, err
+    // }
 
     auth, err := bind.NewKeyedTransactorWithChainID(
         h.PrivateKey,
@@ -22,6 +20,10 @@ func (h *Handler) getAuth(ctx context.Context) (*bind.TransactOpts, error) {
     if err != nil {
         return &bind.TransactOpts{}, err
     }
+	// auth := bind.NewKeyedTransactor(h.PrivateKey)
+	// if err != nil {
+	// 	return &bind.TransactOpts{}, err
+	// }
 
     // ---- eipp-1559 standard ----
     // auth.From = h.PublicAddress
@@ -33,16 +35,16 @@ func (h *Handler) getAuth(ctx context.Context) (*bind.TransactOpts, error) {
     // auth.Context = ctx
         
     // ---- older standard (for ganache) ----
-    gasPrice, err := h.Client.SuggestGasPrice(ctx)
-    if err != nil {
-        return &bind.TransactOpts{}, err
-    }
-    auth.From = h.PublicAddress
-    auth.Nonce = big.NewInt(int64(nonce))
-    auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
-    auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
-    auth.Context = ctx
-    auth.GasPrice = gasPrice // price of gas in wei
+    // gasPrice, err := h.Client.SuggestGasPrice(ctx)
+    // if err != nil {
+    //     return &bind.TransactOpts{}, err
+    // }
+    // auth.From = h.PublicAddress
+    // auth.Nonce = big.NewInt(int64(nonce))
+    // auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
+    // auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
+    // auth.Context = ctx
+    // auth.GasPrice = gasPrice // price of gas in wei
 
     return auth, nil
 }
@@ -64,7 +66,7 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
         return &DeployResult{}, err
     }
 
-    fmt.Println("Deploying petition contract")
+
     address, transaction, contract, err := DeployPetitionContract(
         auth,
         h.Client,
@@ -72,7 +74,7 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
         params.PetitionText,
     )
     if err != nil {
-        return &DeployResult{}, nil
+        return &DeployResult{}, err
     }
 
     return &DeployResult{

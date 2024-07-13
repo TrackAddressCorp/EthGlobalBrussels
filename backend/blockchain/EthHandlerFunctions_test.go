@@ -14,12 +14,17 @@ var result *DeployResult
 func TestDeployContract(t *testing.T) {
     ctx := context.Background()
 
+	fmt.Println("Deploying contract")
+	lastBlock, err := testHandler.Client.BlockByNumber(ctx, nil)
+	fmt.Println("last block: ", lastBlock)
+	require.NoError(t, err)
+
     params = DeployParams{
         PetitionTitle: "Test Petition",
         PetitionText: "This is a test petition",
     }
 
-    var err error
+	// here
     result, err = testHandler.DeployPetition(
         ctx,
         params,

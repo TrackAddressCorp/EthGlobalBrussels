@@ -14,6 +14,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/event"
+	"log"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -46,13 +47,16 @@ var PetitionContractBin = PetitionContractMetaData.Bin
 // DeployPetitionContract deploys a new Ethereum contract, binding an instance of PetitionContract to it.
 func DeployPetitionContract(auth *bind.TransactOpts, backend bind.ContractBackend, _petition_title string, _petition_text string) (common.Address, *types.Transaction, *PetitionContract, error) {
 	parsed, err := PetitionContractMetaData.GetAbi()
+	log.Println("abi err",err)
 	if err != nil {
 		return common.Address{}, nil, nil, err
 	}
+	log.Println("abi",parsed)
 	if parsed == nil {
 		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
 	}
 
+	log.Println()
 	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(PetitionContractBin), backend, _petition_title, _petition_text)
 	if err != nil {
 		return common.Address{}, nil, nil, err

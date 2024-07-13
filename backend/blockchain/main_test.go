@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -18,6 +19,15 @@ func TestMain(m *testing.M) {
 		"HTTP://host.docker.internal:7545",
 		"416aaf560788b841a577de5493c95056e789d1945f61912bd5a8fb1e237ad780",
     )
+	fmt.Println("testHandler: ", testHandler)
+	fmt.Println("client: ", testHandler.Client)
+	fmt.Println("chainID: ", testHandler.ChainID)
+	fmt.Println("privateKey: ", testHandler.PrivateKey)
+	fmt.Println("privateKeyString: ", testHandler.PrivateKeyString)
+	fmt.Println("publicKey: ", testHandler.PublicKey)
+	fmt.Println("publicKeyString: ", testHandler.PublicKeyString)
+	fmt.Println("publicAddress: ", testHandler.PublicAddress)
+	fmt.Println("publicAddressString: ", testHandler.PublicAddressString)
     if err != nil {
         log.Fatal(err)
     }
