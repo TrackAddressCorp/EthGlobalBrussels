@@ -17,6 +17,7 @@ export default function Home() {
 	const [petitionId, setPetitionId] = useState<number | null>(null);
 	const [file, setFile] = useState<File | null>(null);
 	const toast = useToast();
+	const [uploading, setLoading] = useState(false);
 
 	const handleCreatePetition = async () => {
 		const response = await fetch('http://localhost:4242/petition/create', {
@@ -60,6 +61,8 @@ export default function Home() {
 		formData.append('pdf', file);
 		formData.append('petition_id', petitionId.toString());
 
+		setLoading(true);
+
 		const response = await fetch('http://localhost:4242/petition/upload', {
 			method: 'POST',
 			body: formData,
@@ -83,6 +86,7 @@ export default function Home() {
 				isClosable: true,
 			});
 		}
+		setLoading(false);
 	};
 
 	const handleFinishPetition = async () => {
@@ -123,7 +127,6 @@ export default function Home() {
 						onChange={(e) => setTitle(e.target.value)}
 					/>
 				</FormControl>
-
 				<FormControl id="description" mb="4">
 					<FormLabel>Description</FormLabel>
 					<Textarea
@@ -132,41 +135,54 @@ export default function Home() {
 					/>
 				</FormControl>
 
-				<Button
-					colorScheme="blue"
-					onClick={handleCreatePetition}
-					mb="4"
-				>
-					Create Petition
-				</Button>
+				{!petitionId && (
+					<Button
+						colorScheme="blue"
+						onClick={handleCreatePetition}
+						mb="4"
+					>
+						Create Petition
+					</Button>
+				)}
 
 				{petitionId && (
-					<>
-						<FormControl id="pdf" mb="4">
+					<div>
+						<FormControl id="pdf" mb="4" >
 							<FormLabel>Upload PDF</FormLabel>
 							<Input
 								type="file"
 								accept="application/pdf"
 								onChange={handleFileChange}
+								style={{
+									height: '50px', // Adjust height as needed
+									alignContent: 'center',
+								}}
 							/>
 						</FormControl>
-						<Button
-							colorScheme="green"
-							onClick={handleUploadPdf}
-							mb="4"
-						>
-							Upload PDF
-						</Button>
-					</>
-				)}
+						<div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+							<Button
+								isLoading={uploading}
+								colorScheme="green"
+								onClick={handleUploadPdf}
+								mb="4"
+							>
+								Upload PDF
+							</Button>
+							<Button
+								colorScheme="red"
+								mb="4"
+								onClick={handleFinishPetition}
+								style={
+									{
+										alignItems: 'right',
+									}
 
-				{petitionId && (
-					<Button
-						colorScheme="red"
-						onClick={handleFinishPetition}
-					>
-						Finish Petition
-					</Button>
+								}
+							>
+								Finish Petition
+							</Button>
+						</div>
+					</div>
 				)}
 			</Box>
 		</ChakraProvider>
