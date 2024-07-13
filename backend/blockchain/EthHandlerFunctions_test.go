@@ -25,6 +25,7 @@ func TestDeployContract(t *testing.T) {
         params,
     )
 
+	fmt.Println("address: ", result.Contract)
     require.NoError(t, err)
     require.NotEmpty(t, result)
     require.NotZero(t, result.Address)

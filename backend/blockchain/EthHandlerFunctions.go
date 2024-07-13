@@ -2,6 +2,7 @@ package blockchain
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -23,25 +24,25 @@ func (h *Handler) getAuth(ctx context.Context) (*bind.TransactOpts, error) {
     }
 
     // ---- eipp-1559 standard ----
+    // auth.From = h.PublicAddress
+    // auth.Nonce = big.NewInt(int64(nonce))
+    // auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
+    // auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
+    // auth.GasFeeCap = big.NewInt(300000000000) // Set a higher max fee per gas
+    // auth.GasTipCap = big.NewInt(2000000000) // Set a max priority fee per gas
+    // auth.Context = ctx
+        
+    // ---- older standard (for ganache) ----
+    gasPrice, err := h.Client.SuggestGasPrice(ctx)
+    if err != nil {
+        return &bind.TransactOpts{}, err
+    }
     auth.From = h.PublicAddress
     auth.Nonce = big.NewInt(int64(nonce))
     auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
     auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
-    auth.GasFeeCap = big.NewInt(300000000000) // Set a higher max fee per gas
-    auth.GasTipCap = big.NewInt(2000000000) // Set a max priority fee per gas
     auth.Context = ctx
-        
-    // ---- older standard (for ganache) ----
-    // gasPrice, err := h.Client.SuggestGasPrice(ctx)
-    // if err != nil {
-    //     return &bind.TransactOpts{}, err
-    // }
-    // auth.From = params.PublicAddress
-    // auth.Nonce = big.NewInt(int64(nonce))
-    // auth.Value = big.NewInt(0) // amount of eth to send along with the transaction
-    // auth.GasLimit = uint64(3000000) // max amount of gas client is willing to pay for this tx
-    // auth.Context = ctx
-    // auth.GasPrice = gasPrice // price of gas in wei
+    auth.GasPrice = gasPrice // price of gas in wei
 
     return auth, nil
 }
@@ -63,6 +64,7 @@ func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*Dep
         return &DeployResult{}, err
     }
 
+    fmt.Println("Deploying petition contract")
     address, transaction, contract, err := DeployPetitionContract(
         auth,
         h.Client,
