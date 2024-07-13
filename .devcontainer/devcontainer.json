@@ -8,7 +8,9 @@
         "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
         "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
     ],
-    "forwardPorts": [8080],
+    "runArgs": [
+        "--network=host"
+    ],
     "customizations": {
         "settings": {
             "go.gopath": "/go",
@@ -38,7 +40,10 @@
                 "rust-lang.rust-analyzer",
                 "usernamehw.errorlens",
                 "tamasfe.even-better-toml",
-                "serayuzgur.crates"
+                "serayuzgur.crates",
+
+                // solidity
+                "juanblanco.solidity"
             ]
         }
     },
