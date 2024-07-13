@@ -22,8 +22,9 @@ func initFiber() {
 	app := fiber.New()
 
 	app.Get("/petition/:id", handlers.GetPetition)
+	app.Get("/petitions", handlers.ListPetitions)
 	app.Post("/petition/sign", handlers.SignPetition)
 	app.Post("/petition/create", handlers.CreatePetition)
 
-	app.Listen(":3000")
+	app.Listen(":4242")
 }

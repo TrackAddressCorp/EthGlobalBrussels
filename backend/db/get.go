@@ -9,3 +9,10 @@ func GetPetition(id uint) (models.Petition, error) {
 
 	return petition, err
 }
+
+func ListPetitions() ([]models.Petition, error) {
+	var petitions []models.Petition
+
+	err := DB.Find(&petitions).Error
+	return petitions, err
+}
