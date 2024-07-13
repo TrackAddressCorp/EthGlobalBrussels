@@ -2,37 +2,62 @@ package blockchain
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"os"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"golang.org/x/crypto/sha3"
 )
 
 /**
-wrapper around ethclient.Client
+    !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
+    wrapper around ethclient.Client
 */
-type Client struct {
+type Handler struct {
     *ethclient.Client
+    PrivateKey      *ecdsa.PrivateKey
+    PublicKey       ecdsa.PublicKey
+    PublicKeyString string
+    PublicAddress   string
 }
 
 /**
+    !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
+    Creates a new handler for the sepolia eth test network
     * @param ctx context.Context
     * @param rpc string
     * @return *Client
     * @return error
 */
-func NewClient(ctx context.Context, rpc string) (*Client, error) {
+func NewHandler(ctx context.Context, rpc string) (*Handler, error) {
     ethClient, err := connectToEth(
         ctx,
-        rpc, // reminder: rpc = os.Getenv("ETH_RPC_URL")
+        rpc,
     )
     if err != nil {
         return nil, err
     }
     defer ethClient.Close()
 
-    return &Client{ethClient}, nil
+    wallet, err := loadWallet(ctx)
+    if err != nil {
+        return nil, err
+    }
+
+    return &Handler{
+        Client: ethClient,
+        PrivateKey: wallet.PrivateKey,
+        PublicKey: wallet.PublicKey,
+        PublicKeyString: wallet.PublicKeyString,
+        PublicAddress: wallet.PublicAddress,
+        }, nil
 }
 
 /**
+    !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
+    Connects to the sepolia eth test network
     * @param ctx context.Context
     * @param rpc string
     * @return *ethclient.Client
@@ -48,4 +73,39 @@ func connectToEth(ctx context.Context, rpc string) (*ethclient.Client, error) {
     }
 
     return client, nil
+}
+
+type EthWallet struct {
+    PrivateKey      *ecdsa.PrivateKey
+    PublicKey       ecdsa.PublicKey
+    PublicKeyString string
+    PublicAddress   string
+}
+
+/**
+    !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
+    Loads the metamask wallet from the environment variables
+    * @param ctx context.Context
+    * @return *EthWallet
+    * @return error
+*/
+func loadWallet(ctx context.Context) (*EthWallet, error) {
+    privateKey, err := crypto.HexToECDSA(os.Getenv("PRIVATE_KEY"))
+    if err != nil {
+        return &EthWallet{}, err
+    }
+
+    publicKey := privateKey.PublicKey
+    publicKeyString := hexutil.Encode(crypto.FromECDSAPub(&publicKey))[4:]
+
+    hash := sha3.NewLegacyKeccak256()
+    hash.Write(crypto.FromECDSAPub(&publicKey)[1:])
+    publicAddress := hexutil.Encode(hash.Sum(nil)[12:])[2:]
+
+    return &EthWallet{
+        PrivateKey:         privateKey,
+        PublicKey:          publicKey,
+        PublicKeyString:    publicKeyString,
+        PublicAddress:      publicAddress,
+    }, nil
 }
