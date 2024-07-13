@@ -1,22 +1,12 @@
 'use client'
 
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Card, CardBody, CardHeader, Center, ChakraProvider, Divider, Heading, HStack, IconButton, Spinner, Text, Toast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Center, HStack, ChakraProvider, Button, Toast, Divider, Box, Spinner, useToast } from '@chakra-ui/react';
 import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit';
 import { useRouter } from 'next/router';
 
 import { useEffect, useState } from 'react';
-
-function onSuccess(data: ISuccessResult) {
-    console.log(data);
-    Toast({
-        title: "Petition signed.",
-        description: "Your signature has been added to the petition.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-    });
-}
 
 interface Petition {
     ID: number;
@@ -62,11 +52,15 @@ export default function ItemDetail() {
     const [item, setItem] = useState<Petition | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const toast = useToast();
 
-    useEffect(() => {
+    const fetchData = useCallback(() => {
         if (!id) {
             return;
         }
+
+        setLoading(true);
+        setError(null);
 
         fetch(`http://localhost:4242/petition/${id}`)
             .then(response => {
@@ -88,6 +82,12 @@ export default function ItemDetail() {
             });
     }, [id]);
 
+    useEffect(() => {
+        if (!error) {
+            fetchData();
+        }
+    }, [fetchData]);
+
     if (loading) {
         return (
             <ChakraProvider>
@@ -105,7 +105,7 @@ export default function ItemDetail() {
                     <Text>Error: {error}</Text>
                 </Center>
             </ChakraProvider>
-        )
+        );
     }
 
     if (!item) {
@@ -118,6 +118,11 @@ export default function ItemDetail() {
         );
     }
 
+    const onSuccess = (data: ISuccessResult) => {
+        console.log(data);
+        setItem({ ...item, signs: item.signs + 1 });
+    }
+
     const handleProof = async (result: ISuccessResult) => {
         console.log(result);
         const proofData = {
@@ -125,28 +130,24 @@ export default function ItemDetail() {
             nullifier_hash: result.nullifier_hash,
             proof: result.proof,
             verification_level: result.verification_level,
-            action: "1",
-          };
+            action: item.ID.toString(),
+        };
 
-          try {
-            const response = await fetch('http://localhost:4242/petition/sign', {
-              method: 'POST',
-              headers: {
+        const response = await fetch('http://localhost:4242/petition/sign', {
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(proofData),
-            });
+            },
+            body: JSON.stringify(proofData),
+        });
 
-            const data = await response.json();
-            if (data.status_code !== 200) {
-                throw new Error(data.status_msg);
-            }
-            console.log('Success:', data);
-          } catch (error) {
-            console.error('Error:', error);
-            setError(error.message);
-          }
+        const data = await response.json();
+        if (data.status_code !== 200) {
+            throw new Error(data.status_msg);
+        }
+        console.log('Success:', data);
     }
+
     return (
         <ChakraProvider>
             <div>
@@ -163,7 +164,7 @@ export default function ItemDetail() {
                                 verification_level={VerificationLevel.Orb}
                             >
                                 {({ open }) => (
-                                    <Button colorScheme="green"onClick={open}>
+                                    <Button colorScheme="green" onClick={open}>
                                         Sign with World ID
                                     </Button>
                                 )}
@@ -190,4 +191,4 @@ export default function ItemDetail() {
             </div>
         </ChakraProvider>
     );
-};
+}
