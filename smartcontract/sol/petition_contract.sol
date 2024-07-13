@@ -12,10 +12,10 @@ contract Petition {
 
     string private petition_title;
     string private petition_text;
-    uint104 private constant max_signers = 10000000;
+    uint104 private constant max_signers = 10;
     uint104 private signers_count;
     Signer[max_signers] private signers;
-    mapping(string => bool) private hasSigned;
+    // mapping(string => bool) private hasSigned;
 
     constructor(string memory _petition_title, string memory _petition_text) {
         petition_title = _petition_title;
@@ -35,7 +35,7 @@ contract Petition {
             0,
             "N/A");
         signers_count++;
-        hasSigned[_world_id] = true;
+        // hasSigned[_world_id] = true;
     }
 
     function get_signers_count() public view returns (uint256) {

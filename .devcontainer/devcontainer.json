@@ -38,7 +38,10 @@
                 "rust-lang.rust-analyzer",
                 "usernamehw.errorlens",
                 "tamasfe.even-better-toml",
-                "serayuzgur.crates"
+                "serayuzgur.crates",
+
+                // solidity
+                "juanblanco.solidity"
             ]
         }
     },
