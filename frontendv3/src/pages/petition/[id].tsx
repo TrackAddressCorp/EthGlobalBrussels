@@ -2,8 +2,20 @@
 
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Center, HStack, ChakraProvider } from '@chakra-ui/react';
+import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Center, HStack, ChakraProvider, Button, Toast, Divider, Box, Spinner } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
+import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit';
+
+function onSuccess(data: ISuccessResult) {
+    console.log(data);
+    Toast({
+        title: "Petition signed.",
+        description: "Your signature has been added to the petition.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+    });
+}
 
 interface Petition {
     ID: number;
@@ -62,7 +74,9 @@ export default function ItemDetail() {
     if (loading) {
         return (
             <ChakraProvider>
-                <p>Loading...</p>
+                <Box p={5} display="flex" justifyContent="center" alignItems="center" height="100vh">
+                    <Spinner size="xl" />
+                </Box>
             </ChakraProvider>
         );
     }
@@ -70,7 +84,7 @@ export default function ItemDetail() {
     if (error) {
         return (
             <ChakraProvider>
-                <Center>
+                <Center padding={100}>
                     <Text>Error: {error}</Text>
                 </Center>
             </ChakraProvider>
@@ -87,6 +101,35 @@ export default function ItemDetail() {
         );
     }
 
+    const handleProof = async (result: ISuccessResult) => {
+        console.log(result);
+        const proofData = {
+            merkle_root: result.merkle_root,
+            nullifier_hash: result.nullifier_hash,
+            proof: result.proof,
+            verification_level: result.verification_level,
+            action: "1",
+          };
+
+          try {
+            const response = await fetch('http://localhost:4242/petition/sign', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(proofData),
+            });
+
+            const data = await response.json();
+            if (data.status_code !== 200) {
+                throw new Error(data.status_msg);
+            }
+            console.log('Success:', data);
+          } catch (error) {
+            console.error('Error:', error);
+            setError(error.message);
+          }
+    }
     return (
         <ChakraProvider>
             <div>
@@ -95,8 +138,22 @@ export default function ItemDetail() {
                         <HStack justify="space-between">
                             <Heading size='md'>{item.title}</Heading>
                             <Text>Signs: {item.signs}</Text>
+                            <IDKitWidget
+                                action={item.ID.toString()}
+                                app_id="app_staging_f324149022608832a0b719539d2a4311"
+                                onSuccess={onSuccess}
+                                handleVerify={handleProof}
+                                verification_level={VerificationLevel.Orb}
+                            >
+                                {({ open }) => (
+                                    <Button colorScheme="green"onClick={open}>
+                                        Sign with World ID
+                                    </Button>
+                                )}
+                            </IDKitWidget>
                         </HStack>
                     </CardHeader>
+                    <Divider></Divider>
                     <CardBody>
                         <Text pt='2' fontSize='sm' marginBottom="20px">
                             {item.description}

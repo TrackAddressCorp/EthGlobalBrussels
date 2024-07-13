@@ -36,7 +36,7 @@ func SignPetition(c *fiber.Ctx) error {
 		Action:            signRequest.Action,
 	})
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: err.Error(), StatusCode: fiber.StatusBadRequest})
+		return c.Status(fiber.StatusBadRequest).JSON(models.Response{StatusMsg: "WorldID: " + err.Error(), StatusCode: fiber.StatusBadRequest})
 	}
 
 	if err := db.AddSign(uint(actionID), successResponse.NullifierHash); err != nil {

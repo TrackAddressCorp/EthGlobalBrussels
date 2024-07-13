@@ -30,8 +30,8 @@ export default function About() {
         verification_level={VerificationLevel.Orb}
       >
         {({ open }) => (
-          <Button className="border border-black rounded-md" onClick={open}>
-            <div className="mx-3 my-1">Sign with World ID</div>
+          <Button onClick={open}>
+            Sign Pepetition
           </Button>
         )}
       </IDKitWidget>
