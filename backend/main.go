@@ -36,6 +36,7 @@ func initFiber() {
 
 	app.Post("/petition/create", handlers.CreatePetition)
 	app.Post("/petition/upload", handlers.UploadFile)
+	app.Post("/petition/finish/:id", handlers.FinishPetition)
 
 	app.Listen(":4242")
 }

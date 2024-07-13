@@ -29,3 +29,7 @@ func AddSign(id uint, NullifierHash string) error {
 func AddPdfURL(id uint, pdfURL string) error {
 	return DB.Create(&models.Pdf{PetitionID: id, PdfURL: pdfURL}).Error
 }
+
+func SetPetitionFinished(id uint) error {
+	return DB.Model(&models.Petition{}).Where("id = ?", id).Update("finished", true).Error
+}
