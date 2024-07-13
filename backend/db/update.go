@@ -26,6 +26,6 @@ func AddSign(id uint, NullifierHash string) error {
 	return err
 }
 
-func SetPdfURL(id uint, pdfURL string) error {
-	return DB.Model(&models.Petition{}).Where("id = ?", id).Update("pdf_url", pdfURL).Error
+func AddPdfURL(id uint, pdfURL string) error {
+	return DB.Create(&models.Pdf{PetitionID: id, PdfURL: pdfURL}).Error
 }

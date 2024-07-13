@@ -12,7 +12,6 @@ import (
 type createPetitionRequest struct {
 	Title       string  `json:"title"`
 	Description *string `json:"description"`
-	PdfURL      *string `json:"pdf_url"`
 }
 
 type createPetitionResponse struct {
@@ -29,7 +28,6 @@ func CreatePetition(c *fiber.Ctx) error {
 	newPetition := models.Petition{
 		Title:       petitionRequest.Title,
 		Description: petitionRequest.Description,
-		PdfURL:      petitionRequest.PdfURL,
 	}
 
 	if err := db.CreatePetition(&newPetition); err != nil {

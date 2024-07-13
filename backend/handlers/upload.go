@@ -44,7 +44,7 @@ func UploadFile(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.Response{StatusMsg: "Failed to upload file to lighthouse", StatusCode: fiber.StatusInternalServerError})
 	}
 
-	err = db.SetPdfURL(uint(petitionID), "https://gateway.lighthouse.storage/ipfs/"+resp.Hash)
+	err = db.AddPdfURL(uint(petitionID), "https://gateway.lighthouse.storage/ipfs/"+resp.Hash)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(models.Response{StatusMsg: "Failed to save file URL", StatusCode: fiber.StatusInternalServerError})
 	}
