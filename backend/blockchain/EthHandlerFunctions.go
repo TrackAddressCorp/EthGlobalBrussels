@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func (h *Handler) GetAuth(ctx context.Context) (*bind.TransactOpts, error) {
+func (h *Handler) getAuth(ctx context.Context) (*bind.TransactOpts, error) {
     nonce, err := h.Client.PendingNonceAt(ctx, h.PublicAddress)
     if err != nil {
         return &bind.TransactOpts{}, err
@@ -58,7 +58,7 @@ type DeployResult struct {
 }
 
 func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*DeployResult, error) {
-    auth, err := h.GetAuth(ctx)
+    auth, err := h.getAuth(ctx)
     if err != nil {
         return &DeployResult{}, err
     }
@@ -86,7 +86,7 @@ type SignParams struct {
 }
 
 func (h *Handler) SignPetition(ctx context.Context, params SignParams) error {
-    auth, err := h.GetAuth(ctx)
+    auth, err := h.getAuth(ctx)
     if err != nil {
         return err
     }
