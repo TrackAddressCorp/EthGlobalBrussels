@@ -4,8 +4,9 @@ import PetitionCard from './petitionCard';
 
 const PetitionList = () => {
     const [petitions, setPetitions] = useState<{
+        signs: number;
         description: string;
-        title: string; id: number
+        title: string; ID: number
     }[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -43,13 +44,16 @@ const PetitionList = () => {
         <ChakraProvider>
             <Box p={5}>
                 <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5}>
-                    {petitions.map((petition) => (
-                        <PetitionCard
-                            key={petition.id}
-                            title={petition.title}
-                            description={petition.description}
-                        />
-                    ))}
+                    {petitions
+                        .sort((a, b) => b.signs - a.signs)
+                        .map((petition) => (
+                            <PetitionCard
+                                id={petition.ID}
+                                title={petition.title}
+                                description={petition.description}
+                                signs={petition.signs}
+                            />
+                        ))}
                 </SimpleGrid>
             </Box>
         </ChakraProvider>
