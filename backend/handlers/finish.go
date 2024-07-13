@@ -21,5 +21,5 @@ func FinishPetition(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(models.Response{StatusMsg: "Petition not found", StatusCode: fiber.StatusNotFound})
 	}
 
-	return c.SendString("Finish Petition")
+	return c.JSON(models.Response{StatusMsg: "Petition finished", StatusCode: fiber.StatusOK})
 }
