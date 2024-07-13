@@ -12,8 +12,8 @@ import (
 )
 
 /**
-    !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
-    wrapper around ethclient.Client
+  !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
+  wrapper around ethclient.Client
 */
 type Handler struct {
     *ethclient.Client
@@ -41,7 +41,7 @@ func NewHandler(ctx context.Context, rpc string) (*Handler, error) {
     }
     defer ethClient.Close()
 
-    wallet, err := loadWallet(ctx)
+    wallet, err := loadWallet()
     if err != nil {
         return nil, err
     }
@@ -85,11 +85,10 @@ type EthWallet struct {
 /**
     !!! UNSAFE !!! ONLY FOR TESTING PURPOSES !!!
     Loads the metamask wallet from the environment variables
-    * @param ctx context.Context
     * @return *EthWallet
     * @return error
 */
-func loadWallet(ctx context.Context) (*EthWallet, error) {
+func loadWallet() (*EthWallet, error) {
     privateKey, err := crypto.HexToECDSA(os.Getenv("PRIVATE_KEY"))
     if err != nil {
         return &EthWallet{}, err
