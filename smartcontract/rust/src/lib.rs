@@ -16,8 +16,8 @@ use alloc::{
 /// Import items from the SDK. The prelude contains common traits and macros.
 use stylus_sdk::{
     prelude::*,
-    alloy_primitives::U256,
-    storage::{StorageString, StorageU256, StorageUint, StorageVec, StorageGuard, StorageType, SimpleStorageType, Erase},
+    alloy_primitives::{U256, Uint},
+    storage::{StorageString, StorageU256, StorageUint, StorageVec}, 
 };
 
 /// The solidity_storage macro allows this struct to be used in persistent
@@ -33,29 +33,7 @@ pub struct Petition {
     petition_text:    StorageString,                     // Name of the petition
     petition_title:   StorageString,                     // Title of the petition
     signers_count:    StorageUint<32, 1>,                // How many signers the petition currently has
-    signers:          StorageVec<StorageSignersType>,    // List of all Signers with their corresponding information
-}
-
-#[allow(dead_code)]
-#[solidity_storage]
-pub struct StorageSignersType {
-    world_id: StorageU256
-}
-
-// Implement Erase for StorageSignersType
-impl Erase for StorageSignersType {
-    fn erase(&mut self) {
-        self.world_id.erase();
-    }
-}
-
-// Implement SimpleStorageType for StorageSignersType
-impl<'a> SimpleStorageType<'a> for StorageSignersType {
-    type Wraps<'b> = StorageSignersType where 'a: 'b;
-
-    fn set_by_wrapped(&mut self, value: Self::Wraps<'a>) {
-        *self = value;
-    }
+    signers:          StorageVec<StorageU256>,           // List of all Signers worldID
 }
 
 #[external]
@@ -99,12 +77,8 @@ impl Petition {
 
     // Sign the petition, saving the signer's information
     pub fn sign(&mut self, world_id: U256) -> Result<(), Vec<u8>> {
-        let signer = StorageSignersType {
-            world_id: StorageU256::new(world_id, 0),
-        };
-
-        self.signers.push(signer);
-        let new_count = self.signers_count.get() + stylus_sdk::alloy_primitives::Uint::<32, 1>::from(1u32);
+        self.signers.push(world_id);
+        let new_count = self.signers_count.get() + Uint::<32, 1>::from(1);
         self.signers_count.set(new_count);
 
         Ok(())
