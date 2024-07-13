@@ -58,17 +58,7 @@ type DeployResult struct {
 }
 
 func (h *Handler) DeployPetition(ctx context.Context, params DeployParams) (*DeployResult, error) {
-    chainID, err := h.Client.ChainID(ctx)
-    if err != nil {
-        return &DeployResult{}, err
-    }
-    auth, err := h.GetAuth(
-        ctx, &GetAuthParams{
-            PrivateKey: h.PrivateKey,
-            PublicAddress: h.PublicAddress,
-            ChainID: chainID,
-        },
-    )
+    auth, err := h.GetAuth(ctx)
     if err != nil {
         return &DeployResult{}, err
     }
