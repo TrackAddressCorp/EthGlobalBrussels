@@ -1,10 +1,10 @@
 'use client'
 
 import { AddIcon } from '@chakra-ui/icons';
-import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading, IconButton } from '@chakra-ui/react';
+import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading, IconButton, Image, keyframes } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import RandomlyMovingPepeMemes from '~/components/pepe';
 import PetitionList from '~/components/petitionList';
- // Import useHistory from react-router-dom
 
 const PlusButton = () => {
   const router = useRouter();
@@ -23,8 +23,31 @@ const PlusButton = () => {
 };
 
 const App = () => {
+  // Define keyframes for animations
+  const pulse = keyframes`
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  `;
+
+  const fadeIn = keyframes`
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  `;
+
   return (
     <ChakraProvider>
+      <RandomlyMovingPepeMemes />
       <Box
         minH="100vh"
         backgroundImage="url('/background.png')" // Path to your background image
@@ -41,6 +64,8 @@ const App = () => {
             mt={8}
             mb={8}
             textAlign="center"
+            position="relative"
+            animation={`${pulse} 3s ease-in-out infinite, ${fadeIn} 2s`}
           >
             <Heading as="h1" size="2xl" mb={4} color="teal.500">
               Welcome to the Petition Platform

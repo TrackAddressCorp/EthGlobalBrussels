@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text, Flex, Spacer, LinkBox, LinkOverlay } from '@chakra-ui/react';
+import { Box, Heading, Text, Flex, LinkBox, LinkOverlay } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 const PetitionCard = ({ id, title, description, signs }: { id: number, title: string, description: string, signs: number }) => {
@@ -17,7 +17,7 @@ const PetitionCard = ({ id, title, description, signs }: { id: number, title: st
         overflow="hidden"
         p={4}
         boxShadow="md"
-        bg="white"
+        bg="rgba(255, 255, 255, 0.7)" // Adjust this value to make the card more or less transparent
         height="400px" // Fixed height
         overflowY="auto" // Allows scrolling within the card for overflow content
       >
