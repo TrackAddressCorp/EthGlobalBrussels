@@ -1,9 +1,10 @@
 'use client'
 
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Card, CardBody, CardHeader, Center, ChakraProvider, Heading, HStack, IconButton, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Center, HStack, ChakraProvider } from '@chakra-ui/react';
-import { Link } from '@chakra-ui/next-js';
+
+import { useEffect, useState } from 'react';
 
 interface Petition {
     ID: number;
@@ -26,6 +27,22 @@ interface Pdf {
     petition_id: number;
     pdf_url: string;
 }
+
+const HomeButton = () => {
+    const router = useRouter();
+
+    return (
+        <Box position="fixed" bottom="4" left="4">
+            <IconButton
+                colorScheme="teal"
+                aria-label="Add"
+                icon={<ArrowBackIcon />}
+                size="lg"
+                onClick={() => router.push('/')} // Add onClick event to redirect
+            />
+        </Box>
+    );
+};
 
 export default function ItemDetail() {
     const router = useRouter();
@@ -112,6 +129,7 @@ export default function ItemDetail() {
                         ))}
                     </CardBody>
                 </Card>
+                <HomeButton />
             </div>
         </ChakraProvider>
     );
