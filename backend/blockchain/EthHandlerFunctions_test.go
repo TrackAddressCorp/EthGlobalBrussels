@@ -46,3 +46,39 @@ func TestSignPetition(t *testing.T) {
 
     require.NoError(t, err)
 }
+
+func TestGetSignerCount(t *testing.T) {
+    ctx := context.Background()
+
+    count, err := testHandler.GetSignerCount(
+        ctx,
+        result.Address,
+    )
+
+    require.NoError(t, err)
+    require.NotZero(t, count)
+}
+
+func TestGetTitle(t *testing.T) {
+    ctx := context.Background()
+
+    title, err := testHandler.GetTitle(
+        ctx,
+        result.Address,
+    )
+
+    require.NoError(t, err)
+    require.Equal(t, params.PetitionTitle, title)
+}
+
+func TestGetText(t *testing.T) {
+    ctx := context.Background()
+
+    text, err := testHandler.GetText(
+        ctx,
+        result.Address,
+    )
+
+    require.NoError(t, err)
+    require.Equal(t, params.PetitionText, text)
+}
