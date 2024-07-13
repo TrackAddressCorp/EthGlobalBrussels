@@ -42,13 +42,16 @@ export default function ItemDetail() {
         fetch(`http://localhost:4242/petition/${id}`)
             .then(response => {
                 if (!response.ok) {
+                    if (response.status !== 200) {
+                        throw new Error(response.json().status_msg);
+                    }
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                setItem(data.petition);
                 setLoading(false);
+                setItem(data.petition);
             })
             .catch(error => {
                 setError(error.message);
