@@ -2,11 +2,15 @@ package main
 
 import (
 	"github.com/TrackAddressCorp/EthGlobalBrussels/db"
-	"github.com/TrackAddressCorp/EthGlobalBrussels/models"
+	"github.com/TrackAddressCorp/EthGlobalBrussels/handlers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
+
 	initDB()
 	initFiber()
 }
@@ -16,15 +20,23 @@ func initDB() {
 	if err != nil {
 		panic(err)
 	}
-	db.AddPetition(models.Petition{Title: "Test", Description: "Test"})
 }
 
 func initFiber() {
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:3000",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
-	app.Listen(":3000")
+	app.Get("/petition/:id", handlers.GetPetition)
+	app.Get("/petitions", handlers.ListPetitions)
+	app.Post("/petition/sign", handlers.SignPetition)
+
+	app.Post("/petition/create", handlers.CreatePetition)
+	app.Post("/petition/upload", handlers.UploadFile)
+	app.Post("/petition/finish/:id", handlers.FinishPetition)
+
+	app.Listen(":4242")
 }

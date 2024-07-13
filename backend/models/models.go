@@ -4,14 +4,22 @@ import "gorm.io/gorm"
 
 type Petition struct {
 	gorm.Model
-	Title           string `json:"title"`
-	Description     string `json:"description"`
-	Votes           int    `json:"votes"`
-	IndividualVotes []Vote `json:"individual_votes" gorm:"foreignKey:PetitionID"`
+	Title           string  `json:"title"`
+	Description     *string `json:"description"`
+	Finished        bool    `json:"finished"`
+	Signs           int     `json:"signs"`
+	IndividualSigns []Sign  `json:"individual_votes" gorm:"foreignKey:PetitionID"`
+	Pdfs            []Pdf   `json:"pdfs" gorm:"foreignKey:PetitionID"`
 }
 
-type Vote struct {
+type Sign struct {
+	gorm.Model
+	PetitionID    uint   `json:"petition_id"`
+	NullifierHash string `json:"signature"`
+}
+
+type Pdf struct {
 	gorm.Model
 	PetitionID uint   `json:"petition_id"`
-	Signature  string `json:"signature"`
+	PdfURL     string `json:"pdf_url"`
 }
