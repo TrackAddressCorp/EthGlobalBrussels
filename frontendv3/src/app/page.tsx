@@ -26,6 +26,13 @@ const PlusButton = () => {
 const App = () => {
   return (
     <ChakraProvider>
+      <Box
+        minH="100vh"
+        backgroundImage="url('/background.png')" // Path to your background image
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        backgroundSize="cover"
+      >
       <Center>
         <Box p={5}>
           <Heading as="h1" size="xl" mb={4}>
@@ -35,6 +42,7 @@ const App = () => {
       </Center>
       <PetitionList />
       <PlusButton />
+      </Box>
     </ChakraProvider>
   );
 };
