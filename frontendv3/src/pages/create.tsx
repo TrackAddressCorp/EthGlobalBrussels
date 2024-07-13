@@ -9,6 +9,8 @@ import {
 	FormControl,
 	FormLabel,
 	ChakraProvider,
+	Text,
+	Center,
 } from "@chakra-ui/react";
 import { useRouter } from 'next/navigation';
 
@@ -122,7 +124,14 @@ export default function Home() {
 
 	return (
 		<ChakraProvider>
-			<Box maxW="md" mx="auto" mt="10">
+			<Box maxW="md" mx="auto" mt="10" borderWidth="1px"
+				borderRadius="lg"
+				overflow="hidden"
+				p={4}
+				boxShadow="md">
+				<Center>
+					<Text fontSize="2xl">Create a Petition</Text>
+				</Center>
 				<FormControl id="title" mb="4">
 					<FormLabel>Title</FormLabel>
 					<Input
