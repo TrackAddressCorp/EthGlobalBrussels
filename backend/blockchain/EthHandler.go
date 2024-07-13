@@ -3,7 +3,7 @@ package blockchain
 import (
 	"context"
 	"crypto/ecdsa"
-	"os"
+	"fmt"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -31,18 +31,20 @@ type Handler struct {
     * @return *Client
     * @return error
 */
-func NewHandler(ctx context.Context, rpc string) (*Handler, error) {
+func NewHandler(ctx context.Context, rpc string, privateKeyString string) (*Handler, error) {
     ethClient, err := connectToEth(
         ctx,
         rpc,
     )
     if err != nil {
+        fmt.Println("Error connecting to eth")
         return nil, err
     }
     defer ethClient.Close()
 
-    wallet, err := loadWallet()
+    wallet, err := loadWallet(privateKeyString)
     if err != nil {
+        fmt.Println("Error loading wallet")
         return nil, err
     }
 
@@ -68,6 +70,7 @@ func connectToEth(ctx context.Context, rpc string) (*ethclient.Client, error) {
         ctx,
         rpc,
     )
+    fmt.Println("rpc: ", rpc)
     if err != nil {
         return nil, err
     }
@@ -88,8 +91,8 @@ type EthWallet struct {
     * @return *EthWallet
     * @return error
 */
-func loadWallet() (*EthWallet, error) {
-    privateKey, err := crypto.HexToECDSA(os.Getenv("PRIVATE_KEY"))
+func loadWallet(privateKeyString string) (*EthWallet, error) {
+    privateKey, err := crypto.HexToECDSA(privateKeyString)
     if err != nil {
         return &EthWallet{}, err
     }
