@@ -62,10 +62,11 @@ export default function ItemDetail() {
         setError(null);
 
         fetch(`http://localhost:4242/petition/${id}`)
-            .then(response => {
+            .then(async response => {
                 if (!response.ok) {
                     if (response.status !== 200) {
-                        throw new Error(response.json().status_msg);
+                        const errorData = await response.json();
+                        throw new Error(errorData.status_msg);
                     }
                     throw new Error('Network response was not ok');
                 }
