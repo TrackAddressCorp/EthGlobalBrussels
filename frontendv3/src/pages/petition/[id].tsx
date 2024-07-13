@@ -1,12 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/router';
-import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Text, Heading, Center, HStack, ChakraProvider, Button, Toast, Divider, Box, Spinner, useToast } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { Box, Button, Card, CardBody, CardHeader, Center, ChakraProvider, Divider, Heading, HStack, IconButton, Spinner, Text, useToast } from '@chakra-ui/react';
 import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useEffect, useState } from 'react';
 
 interface Petition {
     ID: number;
