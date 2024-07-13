@@ -1,10 +1,23 @@
 'use client'
 
 import { AddIcon } from '@chakra-ui/icons';
-import { ChakraProvider, Box, Spinner, SimpleGrid, Center, Heading, IconButton, Image, keyframes } from '@chakra-ui/react';
+import { ChakraProvider, Box, SimpleGrid, Center, Heading, IconButton, keyframes, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import RandomlyMovingPepeMemes from '~/components/pepe';
 import PetitionList from '~/components/petitionList';
+
+let animationsEnabled = true; // Global boolean to control animations
+
+const ToggleAnimationsButton = ({ toggleAnimations }: { toggleAnimations: () => void }) => {
+  return (
+    <Box position="fixed" bottom="20px" right="20px">
+      <Button onClick={toggleAnimations} aria-label="Toggle Animations">
+        <img src="/favicon.ico" alt="Toggle Animations" style={{ width: 24, height: 24 }} />
+      </Button>
+    </Box>
+  );
+};
 
 const PlusButton = () => {
   const router = useRouter();
@@ -23,6 +36,13 @@ const PlusButton = () => {
 };
 
 const App = () => {
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+
+  const toggleAnimations = () => {
+    setAnimationsEnabled(!animationsEnabled);
+  };
+
+
   // Define keyframes for animations
   const pulse = keyframes`
     0% {
@@ -47,7 +67,7 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <RandomlyMovingPepeMemes />
+      <RandomlyMovingPepeMemes animationsEnabled={animationsEnabled} />
       <Box
         minH="100vh"
         backgroundImage="url('/background.png')" // Path to your background image
@@ -65,7 +85,7 @@ const App = () => {
             mb={8}
             textAlign="center"
             position="relative"
-            animation={`${pulse} 3s ease-in-out infinite, ${fadeIn} 2s`}
+            animation={animationsEnabled ? `${pulse} 3s ease-in-out infinite, ${fadeIn} 2s` : 'none'}
           >
             <Heading as="h1" size="2xl" mb={4} color="teal.500">
               Welcome to the Petition Platform
@@ -74,6 +94,7 @@ const App = () => {
         </Center>
         <PetitionList />
         <PlusButton />
+        <ToggleAnimationsButton toggleAnimations={toggleAnimations} />
       </Box>
     </ChakraProvider>
   );

@@ -7,7 +7,7 @@ const pepeMemes = [
     "pepe3.jpg"
 ];
 
-const RandomlyMovingPepeMemes = () => {
+const RandomlyMovingPepeMemes = ({ animationsEnabled }: { animationsEnabled: boolean }) => {
     // Initialize state with random positions, rotations, and scales for each meme
     const [styles, setStyles] = useState(pepeMemes.map(() => ({
         top: `calc(${Math.random() * 100}% - 50px)`,
@@ -16,6 +16,8 @@ const RandomlyMovingPepeMemes = () => {
     })));
 
     useEffect(() => {
+        if (!animationsEnabled) return;
+
         // Function to update styles
         const updateStyles = () => {
             setStyles(styles.map(() => ({
@@ -30,8 +32,13 @@ const RandomlyMovingPepeMemes = () => {
 
         // Cleanup interval on component unmount
         return () => clearInterval(intervalId);
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, [animationsEnabled]); // Dependency array includes animationsEnabled to handle its changes
 
+    if (!animationsEnabled) {
+        // Return null or some placeholder if animations are disabled
+        return null;
+    }
+    
     return (
         <>
             {pepeMemes.map((memeSrc, index) => (
@@ -44,7 +51,7 @@ const RandomlyMovingPepeMemes = () => {
                         ...styles[index],
                         width: '100px', // Set a fixed size or make it dynamic as per your requirement
                         height: '100px',
-                        transition: 'transform 1s, top 1s, left 1s', // Smooth transition for transformations
+                        transition: animationsEnabled ? 'transform 1s, top 1s, left 1s' : 'none', // Smooth transition for transformations
                     }}
                 />
             ))}
