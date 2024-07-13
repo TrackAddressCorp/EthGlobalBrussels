@@ -1,4 +1,3 @@
-
 'use client'
 
 import { AddIcon } from '@chakra-ui/icons';
@@ -33,15 +32,23 @@ const App = () => {
         backgroundRepeat="no-repeat"
         backgroundSize="cover"
       >
-      <Center>
-        <Box p={5}>
-          <Heading as="h1" size="xl" mb={4}>
-            Welcome to the Petition Platform
-          </Heading>
-        </Box>
-      </Center>
-      <PetitionList />
-      <PlusButton />
+        <Center>
+          <Box
+            p={5}
+            bg="whiteAlpha.800"
+            borderRadius="md"
+            boxShadow="lg"
+            mt={8}
+            mb={8}
+            textAlign="center"
+          >
+            <Heading as="h1" size="2xl" mb={4} color="teal.500">
+              Welcome to the Petition Platform
+            </Heading>
+          </Box>
+        </Center>
+        <PetitionList />
+        <PlusButton />
       </Box>
     </ChakraProvider>
   );
