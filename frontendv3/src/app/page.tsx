@@ -7,7 +7,7 @@ import { useState } from 'react';
 import RandomlyMovingPepeMemes from '~/components/pepe';
 import PetitionList from '~/components/petitionList';
 
-let animationsEnabled = true; // Global boolean to control animations
+let animationsEnabled = false; // Global boolean to control animations
 
 const ToggleAnimationsButton = ({ toggleAnimations }: { toggleAnimations: () => void }) => {
   return (
@@ -36,7 +36,7 @@ const PlusButton = () => {
 };
 
 const App = () => {
-  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+  const [animationsEnabled, setAnimationsEnabled] = useState(false);
 
   const toggleAnimations = () => {
     setAnimationsEnabled(!animationsEnabled);

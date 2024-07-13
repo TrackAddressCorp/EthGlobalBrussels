@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Box, Button, Card, CardBody, CardHeader, Center, ChakraProvider, Divider, Heading, HStack, IconButton, Spinner, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, CardHeader, Center, ChakraProvider, Divider, Heading, HStack, IconButton, Spinner, Text, useToast, VStack } from '@chakra-ui/react';
 import { IDKitWidget, ISuccessResult, VerificationLevel } from '@worldcoin/idkit';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -150,11 +150,11 @@ export default function ItemDetail() {
 
     return (
         <ChakraProvider>
-            <div>
-                <Card padding="10px">
+            <Box maxW="container.lg" mx="auto" p="4">
+                <Card p="4" boxShadow="md" borderRadius="md">
                     <CardHeader>
-                        <HStack justify="space-between">
-                            <Heading size='md'>{item.title}</Heading>
+                        <HStack justify="space-between" alignItems="center">
+                            <Heading size="md">{item.title}</Heading>
                             <Text>Signs: {item.signs}</Text>
                             <IDKitWidget
                                 action={item.ID.toString()}
@@ -171,24 +171,28 @@ export default function ItemDetail() {
                             </IDKitWidget>
                         </HStack>
                     </CardHeader>
-                    <Divider></Divider>
+                    <Divider my="4" />
                     <CardBody>
-                        <Text pt='2' fontSize='sm' marginBottom="20px">
+                        <Text pt="2" fontSize="sm" mb="4">
                             {item.description}
                         </Text>
-                        {item.pdfs.map(pdf => (
-                            <div key={pdf.ID} style={{ marginBottom: '20px' }}>
-                                <iframe
-                                    src={pdf.pdf_url}
-                                    style={{ width: '100%', height: '500px' }}
-                                    allowFullScreen
-                                ></iframe>
-                            </div>
-                        ))}
+                        <VStack spacing="4">
+                            {item.pdfs.map(pdf => (
+                                <Box key={pdf.ID} w="full" borderRadius="md" overflow="hidden" boxShadow="sm">
+                                    <iframe
+                                        src={pdf.pdf_url}
+                                        style={{ width: '100%', height: '500px', border: 'none' }}
+                                        allowFullScreen
+                                    />
+                                </Box>
+                            ))}
+                        </VStack>
                     </CardBody>
                 </Card>
-                <HomeButton />
-            </div>
+                <Box mt="4">
+                    <HomeButton />
+                </Box>
+            </Box>
         </ChakraProvider>
     );
 }
