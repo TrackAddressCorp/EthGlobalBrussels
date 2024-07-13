@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -17,10 +18,12 @@ import (
 */
 type Handler struct {
     *ethclient.Client
-    PrivateKey      *ecdsa.PrivateKey
-    PublicKey       ecdsa.PublicKey
-    PublicKeyString string
-    PublicAddress   string
+    PrivateKey          *ecdsa.PrivateKey
+    PrivateKeyString    string
+    PublicKey           ecdsa.PublicKey
+    PublicKeyString     string
+    PublicAddress       common.Address
+    PublicAddressString string
 }
 
 /**
@@ -51,9 +54,11 @@ func NewHandler(ctx context.Context, rpc string, privateKeyString string) (*Hand
     return &Handler{
         Client: ethClient,
         PrivateKey: wallet.PrivateKey,
+        PrivateKeyString: wallet.PrivateKeyString,
         PublicKey: wallet.PublicKey,
         PublicKeyString: wallet.PublicKeyString,
         PublicAddress: wallet.PublicAddress,
+        PublicAddressString: wallet.PublicAddressString,
         }, nil
 }
 
@@ -79,10 +84,12 @@ func connectToEth(ctx context.Context, rpc string) (*ethclient.Client, error) {
 }
 
 type EthWallet struct {
-    PrivateKey      *ecdsa.PrivateKey
-    PublicKey       ecdsa.PublicKey
-    PublicKeyString string
-    PublicAddress   string
+    PrivateKey          *ecdsa.PrivateKey
+    PrivateKeyString    string
+    PublicKey           ecdsa.PublicKey
+    PublicKeyString     string
+    PublicAddress       common.Address
+    PublicAddressString string
 }
 
 /**
@@ -102,12 +109,14 @@ func loadWallet(privateKeyString string) (*EthWallet, error) {
 
     hash := sha3.NewLegacyKeccak256()
     hash.Write(crypto.FromECDSAPub(&publicKey)[1:])
-    publicAddress := hexutil.Encode(hash.Sum(nil)[12:])[2:]
+    publicAddressString := hexutil.Encode(hash.Sum(nil)[12:])[2:]
 
     return &EthWallet{
-        PrivateKey:         privateKey,
-        PublicKey:          publicKey,
-        PublicKeyString:    publicKeyString,
-        PublicAddress:      publicAddress,
+        PrivateKey:             privateKey,
+        PrivateKeyString:       privateKeyString,
+        PublicKey:              publicKey,
+        PublicKeyString:        publicKeyString,
+        PublicAddress:          crypto.PubkeyToAddress(publicKey),
+        PublicAddressString:    publicAddressString,
     }, nil
 }
