@@ -60,15 +60,31 @@ export default function ItemDetail() {
     }, [id]);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <ChakraProvider>
+                <p>Loading...</p>
+            </ChakraProvider>
+        );
     }
 
     if (error) {
-        return <p>Error: {error}</p>;
+        return (
+            <ChakraProvider>
+                <Center>
+                    <Text>Error: {error}</Text>
+                </Center>
+            </ChakraProvider>
+        )
     }
 
     if (!item) {
-        return <p>No item found</p>;
+        return (
+            <ChakraProvider>
+                <Center>
+                    <Text>Item not found.</Text>
+                </Center>
+            </ChakraProvider>
+        );
     }
 
     return (
