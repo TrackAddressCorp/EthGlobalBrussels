@@ -46,7 +46,7 @@ export default function Home() {
         </Card>
       </Center>
 
-      <Link href='/about' color='blue.400' _hover={{ color: 'blue.500' }}>
+      <Link href='/item/1' color='blue.400' _hover={{ color: 'blue.500' }}>
         About
       </Link>
 
