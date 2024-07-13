@@ -14,7 +14,7 @@ solc:
 
 # run inside of devcontainer
 abigen:
-	abigen --abi=./build/$(CONTRACT_NAME).abi --pkg $(PKG) --type $(TYPE) --out ../../backend/eth/$(CONTRACT_NAME).go
+	abigen --abi=./build/$(CONTRACT_NAME).abi --pkg $(PKG) --type $(TYPE) --out ../../backend/blockchain/$(CONTRACT_NAME).go
 
 abigen_deploy:
-	abigen --bin=./build/$(CONTRACT_NAME).bin --abi=./build/$(CONTRACT_NAME).abi --pkg=$(PKG) --type=$(TYPE) --out=../../backend/eth/$(DEP_CONTRACT).go
+	abigen --bin=./build/$(CONTRACT_NAME).bin --abi=./build/$(CONTRACT_NAME).abi --pkg=$(PKG) --type=$(TYPE) --out=../../backend/blockchain/$(DEP_CONTRACT).go
