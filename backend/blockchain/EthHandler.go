@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"fmt"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -18,6 +19,7 @@ import (
 */
 type Handler struct {
     *ethclient.Client
+    ChainID             *big.Int
     PrivateKey          *ecdsa.PrivateKey
     PrivateKeyString    string
     PublicKey           ecdsa.PublicKey
@@ -41,18 +43,24 @@ func NewHandler(ctx context.Context, rpc string, privateKeyString string) (*Hand
     )
     if err != nil {
         fmt.Println("Error connecting to eth")
-        return nil, err
+        return &Handler{}, err
     }
     defer ethClient.Close()
 
     wallet, err := loadWallet(privateKeyString)
     if err != nil {
         fmt.Println("Error loading wallet")
-        return nil, err
+        return &Handler{}, err
+    }
+
+    chainID, err := ethClient.ChainID(ctx)
+    if err != nil {
+        return &Handler{}, err
     }
 
     return &Handler{
         Client: ethClient,
+        ChainID: chainID,
         PrivateKey: wallet.PrivateKey,
         PrivateKeyString: wallet.PrivateKeyString,
         PublicKey: wallet.PublicKey,
@@ -75,7 +83,6 @@ func connectToEth(ctx context.Context, rpc string) (*ethclient.Client, error) {
         ctx,
         rpc,
     )
-    fmt.Println("rpc: ", rpc)
     if err != nil {
         return nil, err
     }
