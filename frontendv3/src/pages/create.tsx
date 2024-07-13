@@ -10,8 +10,11 @@ import {
 	FormLabel,
 	ChakraProvider,
 } from "@chakra-ui/react";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+	const router = useRouter();
+
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [petitionId, setPetitionId] = useState<number | null>(null);
@@ -105,6 +108,7 @@ export default function Home() {
 				duration: 5000,
 				isClosable: true,
 			});
+			router.push('/petition/' + petitionId);
 		} else {
 			toast({
 				title: "Error.",
