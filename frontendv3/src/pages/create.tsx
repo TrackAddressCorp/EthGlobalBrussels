@@ -22,7 +22,7 @@ export default function Home() {
 	const toast = useToast();
 	const [uploading, setLoading] = useState(false);
 
-	const handleCreatePetition = async () => {
+	const handleCreatePetition = async (): Promise<void> => {
 		const response = await fetch('http://localhost:4242/petition/create', {
 			method: 'POST',
 			headers: {
