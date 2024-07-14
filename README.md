@@ -17,19 +17,19 @@ With PetitionVault we make petitions safe from malicious activities by both the 
 
 ## Components
 - Frontend:
-  - Authenticate for signing petitions using [WorldID]("https://worldcoin.org/world-id")
+  - Authenticate for signing petitions using [WorldID](https://worldcoin.org/world-id)
   - create and ...
   - sign petitions
   - upload source documents
 - Backend:
   - store addresses and other safe-to-store, non-privacy-invasive information in sqlite-database
-  - upload pdf documents to lighthouse storeage powered by [Filecoin]("https://filecoin.io/")
+  - upload pdf documents to lighthouse storeage powered by [Filecoin](https://filecoin.io/)
   - missing (:/): query smartcontract
 - Smart Contract:
   - ensure immutability of petitions
   - allow authenticate users to sign
   - store link(s) to sources
-  - increased efficiency thanks to [Arbitrum Stylus]("https://arbitrum.io/stylus")
+  - increased efficiency thanks to [Arbitrum Stylus](https://arbitrum.io/stylus)
 
 ## Technologies
 <a href="https://filecoin.io/">
