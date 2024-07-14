@@ -1,6 +1,8 @@
 # Project: PetitionVault
 With PetitionVault we make petitions safe from malicious activities by both the signers and the creators.
-<img src="/frontend/public/Cover.png" width=500 height= 200 alt="image">
+<div align="center">
+    <img src="/frontend/public/Cover.png" width="500" height="300" alt="image">
+</div>
 
 ## Team
 - Johannes: Frontend
