@@ -43,7 +43,23 @@ With PetitionVault we make petitions safe from malicious activities by both the 
   - Some identification methods may allow for some reliable general informations about the user such as General location (on the scale of the country, region or even town).
 
 - **Factory Smart Contract:**
-  - Implement a Factory smart contract to facilitate easier interfacing with individual petition smart contracts. 
+  - Implement a Factory smart contract to facilitate easier interfacing with individual petition smart contracts.
   - This would streamline the creation and management of new petitions.
 
-##
+## Try it out
+- copy and rename the frontend/.env.example and backend/.env.example to .env
+- get API keys
+  - WorldCoin
+    - go to https://developer.worldcoin.org
+    - create a team
+    - go to App Profile
+    - copy the app_staging ID and fill out both .env files
+    - click on the 0 in the upper right corner -> Overview
+    - go to API keys
+    - create a new one
+    - click on the three dots and reset the key
+    - copy the key into the backend/.env file
+  - LightHouse
+    - login/register at https://files.lighthouse.storage/
+    - click on API Key
+    - generate a new one and put it into the backend/.env file
