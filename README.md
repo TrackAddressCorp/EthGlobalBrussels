@@ -32,4 +32,18 @@ With PetitionVault we make petitions safe from malicious activities by both the 
   - Store link(s) to sources
   - Increased efficiency thanks to <a href="https://arbitrum.io/stylus">Arbitrum Stylus</a> <img src="https://github.com/user-attachments/assets/c16383f3-732f-4329-a840-52c5a7f4f5c0" width="20" height="20" alt="Arbitrum Stylus">
 
-## 
+
+## Next Steps
+
+- **Additional Identification Methods:**
+  - Explore and integrate other forms of identification that align with the concept of "Certified Anonymous Unique Human" users.
+
+- **Enhanced User Information:**
+  - Some additional anonymized informations that are relevant for a specific petition could be voluntarily submitted alongside the signature.
+  - Some identification methods may allow for some reliable general informations about the user such as General location (on the scale of the country, region or even town).
+
+- **Factory Smart Contract:**
+  - Implement a Factory smart contract to facilitate easier interfacing with individual petition smart contracts. 
+  - This would streamline the creation and management of new petitions.
+
+##
