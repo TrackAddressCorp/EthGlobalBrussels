@@ -63,3 +63,6 @@ With PetitionVault we make petitions safe from malicious activities by both the 
     - login/register at https://files.lighthouse.storage/
     - click on API Key
     - generate a new one and put it into the backend/.env file
+- run
+  - on your first run, run `make init` in the base dir
+  - after that you can always start with `make`
