@@ -1,6 +1,9 @@
 # Project: PetitionVault
 With PetitionVault we make petitions safe from malicious activities by both the signers and the creators.
-![Banner]("/Users/leon/Downloads/Cover.png")
+![]("/Users/leon/Downloads/Cover.png")
+<a href="https://filecoin.io/">
+  <img src="/Users/leon/Downloads/Cover.png" width="100" height="100" alt="image">
+</a>
 ## Technologies
 <a href="https://filecoin.io/">
   <img src="https://github.com/user-attachments/assets/0a33c99a-5e24-4cf7-8da2-2cf3cc7a613b" width="100" height="100" alt="image">
