@@ -47,6 +47,7 @@ With PetitionVault we make petitions safe from malicious activities by both the 
   - This would streamline the creation and management of new petitions.
 
 ## Try it out
+- simplest way to make sure you have the right versions of everything is to reopen the project with VSCode with the provided devcontainer
 - copy and rename the frontend/.env.example and backend/.env.example to .env
 - get API keys
   - WorldCoin
