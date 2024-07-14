@@ -2,7 +2,7 @@
 With PetitionVault we make petitions safe from malicious activities by both the signers and the creators.
 
 ## Technologies
-[![image](https://github.com/user-attachments/assets/0a33c99a-5e24-4cf7-8da2-2cf3cc7a613b)](https://filecoin.io/)
+<img src="https://github.com/user-attachments/assets/0a33c99a-5e24-4cf7-8da2-2cf3cc7a613b" width="100" height="100" alt="image">
 
 
 
