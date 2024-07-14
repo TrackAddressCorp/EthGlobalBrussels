@@ -5,7 +5,7 @@ import { ChakraProvider, Box, SimpleGrid, Center, Heading, IconButton, keyframes
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import RandomlyMovingPepeMemes from '~/components/pepe';
-import PetitionList from '~/components/petitionList';
+import PetitionList from '~/components/PetitionList';
 
 let animationsEnabled = false; // Global boolean to control animations
 
