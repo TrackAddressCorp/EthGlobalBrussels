@@ -158,7 +158,7 @@ export default function ItemDetail() {
                             <Text>Signs: {item.signs}</Text>
                             <IDKitWidget
                                 action={item.ID.toString()}
-                                app_id="app_staging_f324149022608832a0b719539d2a4311"
+                                app_id={process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`}
                                 onSuccess={onSuccess}
                                 handleVerify={handleProof}
                                 verification_level={VerificationLevel.Orb}
