@@ -88,7 +88,7 @@ const App = () => {
             animation={animationsEnabled ? `${pulse} 3s ease-in-out infinite, ${fadeIn} 2s` : 'none'}
           >
             <Heading as="h1" size="2xl" mb={4} color="teal.500">
-              Welcome to the Petition Platform
+              Welcome to Pepetition!
             </Heading>
           </Box>
         </Center>
