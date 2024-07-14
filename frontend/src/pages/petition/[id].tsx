@@ -150,47 +150,55 @@ export default function ItemDetail() {
 
     return (
         <ChakraProvider>
-            <Box maxW="container.lg" mx="auto" p="4">
-                <Card p="4" boxShadow="md" borderRadius="md">
-                    <CardHeader>
-                        <HStack justify="space-between" alignItems="center">
-                            <Heading size="md">{item.title}</Heading>
-                            <Text>Signs: {item.signs}</Text>
-                            <IDKitWidget
-                                action={item.ID.toString()}
-                                app_id={process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`}
-                                onSuccess={onSuccess}
-                                handleVerify={handleProof}
-                                verification_level={VerificationLevel.Orb}
-                            >
-                                {({ open }) => (
-                                    <Button colorScheme="green" onClick={open}>
-                                        Sign with World ID
-                                    </Button>
-                                )}
-                            </IDKitWidget>
-                        </HStack>
-                    </CardHeader>
-                    <Divider my="4" />
-                    <CardBody>
-                        <Text pt="2" fontSize="sm" mb="4">
-                            {item.description}
-                        </Text>
-                        <VStack spacing="4">
-                            {item.pdfs.map(pdf => (
-                                <Box key={pdf.ID} w="full" borderRadius="md" overflow="hidden" boxShadow="sm">
-                                    <iframe
-                                        src={pdf.pdf_url}
-                                        style={{ width: '100%', height: '500px', border: 'none' }}
-                                        allowFullScreen
-                                    />
-                                </Box>
-                            ))}
-                        </VStack>
-                    </CardBody>
-                </Card>
-                <Box mt="4">
-                    <HomeButton />
+            <Box
+                minH="100vh"
+                backgroundImage="url('/background.png')" // Path to your background image
+                backgroundPosition="center"
+                backgroundRepeat="no-repeat"
+                backgroundSize="cover"
+            >
+                <Box maxW="container.lg" mx="auto" p="4">
+                    <Card p="4" boxShadow="md" borderRadius="md">
+                        <CardHeader>
+                            <HStack justify="space-between" alignItems="center">
+                                <Heading size="md">{item.title}</Heading>
+                                <Text>Signs: {item.signs}</Text>
+                                <IDKitWidget
+                                    action={item.ID.toString()}
+                                    app_id={process.env.NEXT_PUBLIC_WLD_APP_ID as `app_${string}`}
+                                    onSuccess={onSuccess}
+                                    handleVerify={handleProof}
+                                    verification_level={VerificationLevel.Orb}
+                                >
+                                    {({ open }) => (
+                                        <Button colorScheme="green" onClick={open}>
+                                            Sign with World ID
+                                        </Button>
+                                    )}
+                                </IDKitWidget>
+                            </HStack>
+                        </CardHeader>
+                        <Divider my="4" />
+                        <CardBody>
+                            <Text pt="2" fontSize="sm" mb="4">
+                                {item.description}
+                            </Text>
+                            <VStack spacing="4">
+                                {item.pdfs.map(pdf => (
+                                    <Box key={pdf.ID} w="full" borderRadius="md" overflow="hidden" boxShadow="sm">
+                                        <iframe
+                                            src={pdf.pdf_url}
+                                            style={{ width: '100%', height: '500px', border: 'none' }}
+                                            allowFullScreen
+                                        />
+                                    </Box>
+                                ))}
+                            </VStack>
+                        </CardBody>
+                    </Card>
+                    <Box mt="4">
+                        <HomeButton />
+                    </Box>
                 </Box>
             </Box>
         </ChakraProvider>
