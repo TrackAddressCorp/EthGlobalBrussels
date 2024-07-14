@@ -1,4 +1,4 @@
-# Project: PetitionVault
+# Project: Pepetitions
 With PetitionVault we make petitions safe from malicious activities by both the signers and the creators.
 <div align="center">
     <img src="/frontend/public/Cover.png" width="500" height="300" alt="image">
