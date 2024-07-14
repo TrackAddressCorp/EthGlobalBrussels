@@ -67,3 +67,4 @@ With PetitionVault we make petitions safe from malicious activities by both the 
 - run
   - on your first run, run `make init` in the base dir
   - after that you can always start with `make`
+  - frontend is listening on port 3000 and the backend on 4242
